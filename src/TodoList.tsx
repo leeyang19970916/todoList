@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cn from "classnames";
 
 interface TodoProps {
   id: number;
@@ -38,8 +39,9 @@ const initialTodos: TodoProps[] = [
   },
 ];
 
-export default function TodoList() {
-  const [todos, setTodos] = useState<TodoProps[]>(initialTodos);
+export default function TodoList({classNames}:{classNames?:string}) {
+  
+  const [todos, setTodos] = useState<TodoProps[]>(initialTodos); //localStorage
 
   const toggleTodoCompletion = (id: number) => {
     setTodos((prevTodos) =>
@@ -50,7 +52,7 @@ export default function TodoList() {
   };
 
   return (
-    <div>
+    <div className={cn("border border-red-900 rounded-[0_0_12px_12px] min-h-[50%] p-[16px_12px] flex flex-col",classNames)}>
       {todos.map((todo) => (
         <Todo key={todo.id} todo={todo} onToggle={() => toggleTodoCompletion(todo.id)} />
       ))}
@@ -67,7 +69,7 @@ export function Todo({ todo, onToggle }: SingleTodoProps) {
   const { title, desc, startDate, isCompleted } = todo;
 
   return (
-    <div className="flex items-center w-[500px] gap-4">
+    <div className="group flex items-center p-[1rem_0.5rem] w-full gap-4 hover:bg-gray-100 hover:rounded-[12px]  ">
       <input
         type="checkbox"
         checked={isCompleted}
@@ -75,8 +77,8 @@ export function Todo({ todo, onToggle }: SingleTodoProps) {
         className="w-[50px]"
       />
       <div className="flex-1">{title}</div>
-      <div className="text-red-500 cursor-pointer w-[50px]">刪</div>
-      {desc && <div className="flex-1">{desc}</div>}
+      <div className="text-red-500 cursor-pointer w-[50px] opacity-0  group-hover:opacity-100 transition-opacity duration-75 ">刪</div>
+      {!desc && <div className="flex-1 opacity-0 group-hover:opacity-100 transition-opacity duration-75">{desc}</div>}
       <div>{startDate}</div>
     </div>
   );

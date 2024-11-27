@@ -1,7 +1,7 @@
 import React, {} from 'react';
-import TabList from './TabList';
-import TodoList from './TodoList';
-import { OffCanvas } from './OffCanvas';
+import TabList from "./tabList";
+import TodoList from './todoList';
+import  OffCanvas  from './offCanvas';
 
 export interface Todo {
   id: number;
@@ -59,8 +59,8 @@ const App: React.FC = () => {
         <div className='py-[2rem]'>
           <h1 className="text-2xl font-bold">Todo List</h1>
         </div>
-        <TabList></TabList>
-        <TodoList classNames="w-[750px]"></TodoList>
+        <TabList/>
+        <TodoList classNames="w-[750px]"/>
       </div>
       <OffCanvas/>
     </div>
@@ -68,3 +68,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

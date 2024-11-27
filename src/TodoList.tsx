@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cn from "classnames";
 
-interface TodoProps {
+export interface TodoProps {
   id: number;
   title: string;
   desc?: string;
@@ -52,7 +52,7 @@ export default function TodoList({classNames}:{classNames?:string}) {
   };
 
   return (
-    <div className={cn("border border-red-900 rounded-[0_0_12px_12px] min-h-[50%] p-[16px_12px] flex flex-col",classNames)}>
+    <div className={cn("border border-red-900 rounded-[0_0_12px_12px] min-h-[50%] p-[16px_12px] flex flex-col overflow-y-scroll",classNames)}>
       {todos.map((todo) => (
         <Todo key={todo.id} todo={todo} onToggle={() => toggleTodoCompletion(todo.id)} />
       ))}

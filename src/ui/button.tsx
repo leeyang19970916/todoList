@@ -9,7 +9,7 @@ interface Props {
 }
 const ADD = {
   variant: "bg-blue-900 text-white",
-  text: "新增",
+  text: "新增+",
 };
 const SAVE = {
   variant: "bg-green-900 text-white",
@@ -20,7 +20,7 @@ const DELETE = {
   text: "刪除",
 };
 const EDIT = {
-  variant: "bg-gray-900 text-black",
+  variant: "bg-pink-900 text-white",
   text: "編輯",
 };
 const CANCEL = {

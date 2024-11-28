@@ -11,8 +11,8 @@ export function addTodo({ title, desc }: addProps) {
     startDate: dayjs().format("YYYY/MM/DD"),
     isCompleted: false,
   };
-
-  list?.push(todo);
+list.push(todo)
+setLocalList(list)
 }
 
 type editProps = Pick<todoProps, "id" | "title" | "desc">;
@@ -24,27 +24,44 @@ export function EditTodo({ id, title, desc }: editProps) {
     // 找到對應 id 的 todo，並更新它
     list[editIndex] = { ...list[editIndex], title, desc };
   }
+  setLocalList(list)
 }
 
 type deleteProps = todoProps["id"];
 export function deleteTodo( id: deleteProps) {
-  // setLocalList("DELETE",id)
   const list = getLocalList();
   const index = list.findIndex((todo) => todo.id === id);
   if (index !== -1) {
     // 找到對應 id 的 todo，並刪除它
     list.splice(index, 1);
   }
+  setLocalList(list)
 }
 
 type toggleIsCompletedProps = Pick<todoProps, "id" | "isCompleted">;
 export function toggleIsCompleted({ id, isCompleted }: toggleIsCompletedProps) {
+  
   const list = getLocalList();
-  const index = list.findIndex((todo) => todo.id === id);
+  const index = list.findIndex(todo => todo.id === id);
+  
+  // console.log(id,isCompleted)
   if (index !== -1) {
     // 切換對應 id 的 todo 的 completed 狀態
     list[index].isCompleted = !isCompleted;
   }
+  console.log(list[index],"list[index]")
+  setLocalList(list)
+}
+export function getTodo(id:todoProps["id"]){
+
+  const list = getLocalList();
+  const index = list.findIndex(todo => todo.id === id);
+  if (index===-1) {
+    console.error("todo isn't exist, id:",id)
+    return null
+  }
+  return list[index]
+
 }
 
 export const getLocalList = (): todoProps[] => {
@@ -56,6 +73,6 @@ export const getLocalList = (): todoProps[] => {
   return [];
 };
 
-export const setLocalList = ({ todoList }: { todoList: todoProps[] }): void => {
+export const setLocalList = ( todoList :todoProps[] ): void => {
   localStorage.setItem("todoList", JSON.stringify(todoList));
 };

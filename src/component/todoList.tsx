@@ -9,36 +9,6 @@ export interface todoProps {
   startDate: string;
   isCompleted: boolean;
 }
-
-const initialTodos: todoProps[] = [
-  {
-    id: 12431234,
-    title: "Task 1",
-    desc: "Description 1",
-    startDate: "2024-11-25",
-    isCompleted: false,
-  },
-  {
-    id: 1243134,
-    title: "Task 2",
-    desc: "Description 2",
-    startDate: "2024-11-26",
-    isCompleted: false,
-  },
-  {
-    id: 12434,
-    title: "Task 3",
-    desc: "Description 3",
-    startDate: "2024-11-27",
-    isCompleted: false,
-  },
-  {
-    id: 124321312311234,
-    title: "Task 4",
-    startDate: "2024-11-28",
-    isCompleted: false,
-  },
-];
 const list: todoProps[] = getLocalList()
 
 export function TodoList({
@@ -46,9 +16,9 @@ export function TodoList({
   onClick,
 }: {
   classNames?: string;
-  onClick: () => void;
+  onClick: (id:todoProps["id"]) => void;
 }) {
-  const [todos, setTodos] = useState<todoProps[]>(list || initialTodos); //localStorage
+  const [todos, setTodos] = useState<todoProps[]>(list);
 
   useEffect(() => {
     setTodos(todos)
@@ -72,33 +42,34 @@ export function Todo({
   onClick,
 }: {
   todo: todoProps;
-  onClick: () => void;
+  onClick: (id:todoProps["id"]) => void;
 }) {
   const { title, desc, startDate, isCompleted, id } = todo;
 
   return (
-    <div className="group flex items-center p-[1rem_0.5rem] w-full gap-4 hover:bg-gray-100 hover:rounded-[12px]">
+    <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-100 hover:rounded-[12px]">
+      <div className="flex ">
       <input
         type="checkbox"
         checked={isCompleted}
         onChange={() => toggleIsCompleted({ id, isCompleted })}
         className="w-[50px]"
       />
-      <div className="flex-1" onClick={onClick}>
+      <div className="flex-1" onClick={()=>onClick(id)}>
         {title}
       </div>
       <div
-        className="text-red-500 cursor-pointer w-[50px] opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
+        className="text-red-500 cursor-pointer  opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
         onClick={() => deleteTodo(id)}
       >
         刪
       </div>
-      {!desc && (
-        <div className="flex-1 opacity-0 group-hover:opacity-100 transition-opacity duration-75">
-          {desc}
-        </div>
-      )}
-      <div>{startDate}</div>
+      </div>
+      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-75 flex justify-between">
+        <span className="w-[50px]"></span>
+        <span className="flex-1">{desc}</span>
+        <span>{startDate}</span>
+      </div>
     </div>
   );
 }

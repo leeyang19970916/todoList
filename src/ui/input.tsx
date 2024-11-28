@@ -2,10 +2,10 @@ import React, { forwardRef } from "react";
 import cn from "classnames";
 
 interface Props {
-    placeholder?: string; // 預設為可選
+    placeholder?: string;
     label: string;
     classNames?: string;
-    value?: string; // 可選，因為可能非受控
+    value?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, Props>(
@@ -30,6 +30,6 @@ const Input = forwardRef<HTMLInputElement, Props>(
     }
 );
 
-Input.displayName = "Input"; // 為 forwardRef 元件指定 displayName 以便於調試
+Input.displayName = "Input"; 
 
 export default Input;

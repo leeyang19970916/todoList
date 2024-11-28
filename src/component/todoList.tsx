@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import cn from "classnames";
-import { toggleIsCompleted, deleteTodo, getLocalList } from "../actions";
+import { todoProps } from "../App";
+import { useTodoManager } from "../hook/useTodoManager";
 
-export interface todoProps {
-  id: number;
-  title: string;
-  desc?: string;
-  startDate: string;
-  isCompleted: boolean;
-}
-const list: todoProps[] = getLocalList()
 
 export function TodoList({
   classNames,
   onClick,
+  todoList
 }: {
+  todoList:todoProps[]|null
   classNames?: string;
   onClick: (id:todoProps["id"]) => void;
 }) {
-  const [todos, setTodos] = useState<todoProps[]>(list);
-
-  useEffect(() => {
-    setTodos(todos)
-  }, [todos])
   return (
     <div
       className={cn(
@@ -30,7 +20,7 @@ export function TodoList({
         classNames
       )}
     >
-      {todos.map((todo) => (
+      {todoList?.map((todo) => (
         <Todo key={todo.id} todo={todo} onClick={onClick} />
       ))}
     </div>
@@ -52,7 +42,7 @@ export function Todo({
       <input
         type="checkbox"
         checked={isCompleted}
-        onChange={() => toggleIsCompleted({ id, isCompleted })}
+        onChange={() => useTodoManager().toggleIsCompleted(id)}
         className="w-[50px]"
       />
       <div className="flex-1" onClick={()=>onClick(id)}>
@@ -60,7 +50,7 @@ export function Todo({
       </div>
       <div
         className="text-red-500 cursor-pointer  opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
-        onClick={() => deleteTodo(id)}
+        onClick={() => {useTodoManager().deleteTodo(id)}}
       >
         刪
       </div>

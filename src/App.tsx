@@ -1,36 +1,45 @@
 import React, { useState } from "react";
-import TabList from "./component/tabList";
 import { TodoList } from "./component/todoList";
 import OffCanvas from "./component/offCanvas";
 import Button from "./ui/button";
-import { todoProps } from "./component/todoList";
-import { getTodo } from "./actions";
+import { tabProps, TabList } from "./component/tabList";
+import { useTodoManager } from "./hook/useTodoManager";
+import useLocalStorageSync from "./hook/useLocalStorageSync";
 
-const App: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false); // 控制 OffCanvas 的显示
-  const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null); // 当前编辑的 todo 数据
+export interface todoProps {
+  id: number;
+  title: string;
+  desc?: string;
+  startDate: string;
+  isCompleted: boolean;
+}
+export const App: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null);
+  const [todoList, updateList] = useLocalStorageSync("todoList");
+  console.log(updateList)
 
-  // 打开编辑模式的处理函数
+  const handleTabChange = (name: tabProps["name"]) => {
+    const isCompleted:boolean = name === "completed";
+    // setTodoList(todoList.filter(todo => todo.isCompleted === isCompleted));
+    console.log(isCompleted)
+  }
   const handleEditTodo = async (id: todoProps["id"]) => {
     try {
-      const todo = await getTodo(id); // 获取 todo 数据
-      setCurrentTodo(todo); // 设置当前 todo
-      setIsOpen(true); // 打开 OffCanvas
+      setCurrentTodo(useTodoManager().getTodo(id));
+      setIsOpen(true); 
     } catch (error) {
       console.error("Failed to fetch todo:", error);
     }
   };
 
-  // 打开新增模式
   const handleAddTodo = () => {
-    setCurrentTodo(null); // 新增模式下，不需要设置数据
+    setCurrentTodo(null); 
     setIsOpen(true);
   };
-
-  // 关闭 OffCanvas
   const handleClose = () => {
     setIsOpen(false);
-    setCurrentTodo(null); // 清除当前的 todo 数据
+    setCurrentTodo(null);
   };
 
   return (
@@ -42,20 +51,21 @@ const App: React.FC = () => {
         <div className="w-[750px] flex justify-end">
           <Button type="ADD" onClick={handleAddTodo} />
         </div>
-        <TabList />
+        <TabList onTabChange={handleTabChange} />
         <TodoList
+          todoList={todoList}
           classNames="w-[750px]"
-          onClick={(id) => handleEditTodo(id)} // 传入 ID 后执行编辑逻辑
+          onClick={(id) => handleEditTodo(id)}
         />
       </div>
       {isOpen && (
         <OffCanvas
           onClose={handleClose}
-          todo={currentTodo} // 将当前的 todo 数据传递给 OffCanvas
+          todo={currentTodo}
         />
       )}
     </div>
   );
 };
 
-export default App;
+

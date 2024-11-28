@@ -2,11 +2,11 @@ import React, { useRef } from "react";
 import Input from "../ui/input";
 import Button from "../ui/button";
 import Textarea from "../ui/textarea";
-import { todoProps } from "./todoList";
+import { todoProps } from "../App";   
 
 interface OffCanvasProps {
   onClose: () => void;
-  todo: todoProps | null; // 当前编辑的 todo 数据，新增模式时为 null
+  todo: todoProps | null;
 }
 
 const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {

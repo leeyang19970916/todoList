@@ -4,7 +4,7 @@ function useLocalStorageSync<T>(key: string, defaultValue: T): [T, (data: T) => 
   const [data, setData] = useState<T>(() => {
     const storedData = localStorage.getItem(key);
     try {
-      return storedData ? (JSON.parse(storedData) as T) : defaultValue; // 使用泛型断言
+      return storedData ? (JSON.parse(storedData) as T) : defaultValue; 
     } catch {
       console.error("Failed to parse localStorage data");
       return defaultValue;
@@ -34,7 +34,7 @@ function useLocalStorageSync<T>(key: string, defaultValue: T): [T, (data: T) => 
     localStorage.setItem(key, JSON.stringify(newData));
   };
 
-  return [data, updateData] as const;
+  return [data, updateData];
 }
 
 export default useLocalStorageSync;

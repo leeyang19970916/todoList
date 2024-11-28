@@ -34,6 +34,7 @@ export function Todo({
   todo: todoProps;
   onClick: (id:todoProps["id"]) => void;
 }) {
+  const {deleteTodo,toggleIsCompleted}=useTodoManager()
   const { title, desc, startDate, isCompleted, id } = todo;
 
   return (
@@ -42,7 +43,7 @@ export function Todo({
       <input
         type="checkbox"
         checked={isCompleted}
-        onChange={() => useTodoManager().toggleIsCompleted(id)}
+        onChange={() => toggleIsCompleted(id)}
         className="w-[50px]"
       />
       <div className="flex-1" onClick={()=>onClick(id)}>
@@ -50,7 +51,7 @@ export function Todo({
       </div>
       <div
         className="text-red-500 cursor-pointer  opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
-        onClick={() => {useTodoManager().deleteTodo(id)}}
+        onClick={() => deleteTodo(id)}
       >
         刪
       </div>

@@ -16,27 +16,25 @@ export interface todoProps {
 export const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null);
-  const [todoList, updateList] = useLocalStorageSync("todoList");
-  console.log(updateList)
+  const { getTodo } = useTodoManager();
+  const [todoList] = useLocalStorageSync<todoProps[]>("todoList", []);
+  const [filterCompleted, setFilterCompleted] = useState<boolean | null>(null);
 
   const handleTabChange = (name: tabProps["name"]) => {
-    const isCompleted:boolean = name === "completed";
-    // setTodoList(todoList.filter(todo => todo.isCompleted === isCompleted));
-    console.log(isCompleted)
-  }
-  const handleEditTodo = async (id: todoProps["id"]) => {
-    try {
-      setCurrentTodo(useTodoManager().getTodo(id));
-      setIsOpen(true); 
-    } catch (error) {
-      console.error("Failed to fetch todo:", error);
-    }
+    const isCompleted = name === "completed" ? true : false
+    setFilterCompleted(isCompleted);
+  };
+
+  const handleEditTodo = (id: todoProps["id"]) => {
+    setCurrentTodo(getTodo(id));
+    setIsOpen(true);
   };
 
   const handleAddTodo = () => {
-    setCurrentTodo(null); 
+    setCurrentTodo(null);
     setIsOpen(true);
   };
+
   const handleClose = () => {
     setIsOpen(false);
     setCurrentTodo(null);
@@ -53,9 +51,9 @@ export const App: React.FC = () => {
         </div>
         <TabList onTabChange={handleTabChange} />
         <TodoList
-          todoList={todoList}
+          todoList={filterCompleted === null ? todoList : todoList.filter(todo => todo.isCompleted === filterCompleted)}
           classNames="w-[750px]"
-          onClick={(id) => handleEditTodo(id)}
+          onClick={handleEditTodo}
         />
       </div>
       {isOpen && (
@@ -67,5 +65,3 @@ export const App: React.FC = () => {
     </div>
   );
 };
-
-

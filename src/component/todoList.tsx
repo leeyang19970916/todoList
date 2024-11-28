@@ -39,7 +39,7 @@ const initialTodos: todoProps[] = [
     isCompleted: false,
   },
 ];
-const list:todoProps[]=getLocalList()
+const list: todoProps[] = getLocalList()
 
 export function TodoList({
   classNames,
@@ -48,11 +48,11 @@ export function TodoList({
   classNames?: string;
   onClick: () => void;
 }) {
-  const [todos, setTodos] = useState<todoProps[]>(list); //localStorage
+  const [todos, setTodos] = useState<todoProps[]>(list || initialTodos); //localStorage
 
-  // useEffect(()=>{
-
-  // },[])
+  useEffect(() => {
+    setTodos(todos)
+  }, [todos])
   return (
     <div
       className={cn(

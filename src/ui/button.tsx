@@ -1,13 +1,16 @@
 import cn from "classnames";
 import React from "react";
 
-type ButtonType = "SAVE" | "DELETE" | "EDIT" | "CANCEL";
+type ButtonType = "ADD"|"SAVE" | "DELETE" | "EDIT" | "CANCEL";
 interface Props {
   type: ButtonType;
   classNames?: string;
   onClick?: () => void;
-  onClose?: () => void;
 }
+const ADD = {
+  variant: "bg-blue-900 text-white",
+  text: "新增",
+};
 const SAVE = {
   variant: "bg-green-900 text-white",
   text: "儲存",
@@ -24,18 +27,17 @@ const CANCEL = {
   variant: "bg-red-900 text-white",
   text: "取消",
 };
-export default function Button({ type, classNames, onClick, onClose }: Props) {
+export default function Button({ type, classNames, onClick }: Props) {
   const { variant, text } = typeHandler(type);
   return (
-    <button 
+    <button
       type="button"
       className={cn(
-        "rounded-[16px]  p-[8_16px] bg-green-900",
+        "rounded-[50px]  p-[8px_16px] bg-green-900 w-[100px]",
         variant,
         classNames
       )}
       onClick={onClick}
-      onClose={onClose}
     >
       {text}
     </button>
@@ -44,6 +46,8 @@ export default function Button({ type, classNames, onClick, onClose }: Props) {
 
 function typeHandler(type: ButtonType) {
   switch (type) {
+    case "ADD":
+      return ADD;
     case "SAVE":
       return SAVE;
     case "DELETE":

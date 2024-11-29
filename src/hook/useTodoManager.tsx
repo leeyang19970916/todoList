@@ -11,6 +11,7 @@ export function useTodoManager() {
   const [todoList, updateTodoList] = useLocalStorageSync<todoProps[]>("todoList", []);
 
   const addTodo = ({ title, desc }: addProps) => {
+    console.log("add")
     const newTodo: todoProps = {
       id: Math.random(), 
       title,
@@ -22,6 +23,7 @@ export function useTodoManager() {
   };
 
   const editTodo = ({ id, title, desc }: editProps) => {
+    console.log("edit")
     const updatedList = todoList.map((todo) =>
       todo.id === id ? { ...todo, title, desc } : todo
     );
@@ -29,11 +31,13 @@ export function useTodoManager() {
   };
 
   const deleteTodo = (id: deleteProps) => {
+    console.log("delete")
     const updatedList = todoList.filter((todo) => todo.id !== id);
     updateTodoList(updatedList);
   };
 
   const toggleIsCompleted = (id: todoProps["id"]) => {
+    console.log("add")
     const updatedList = todoList.map((todo) =>
       todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );

@@ -1,15 +1,16 @@
 import cn from "classnames";
-import React from "react";
+import React, { ReactElement, ReactNode } from "react";
 
 type ButtonType = "ADD"|"SAVE" | "DELETE" | "EDIT" | "CANCEL";
 interface Props {
   type: ButtonType;
-  classNames?: string;
+  className?: string;
   onClick?: () => void;
+  children?:ReactNode
 }
 const ADD = {
   variant: "bg-blue-900 text-white",
-  text: "新增+",
+  text: "新增 +",
 };
 const SAVE = {
   variant: "bg-green-900 text-white",
@@ -27,7 +28,7 @@ const CANCEL = {
   variant: "bg-red-900 text-white",
   text: "取消",
 };
-export default function Button({ type, classNames, onClick }: Props) {
+export default function Button({ type, className, onClick,children }: Props) {
   const { variant, text } = typeHandler(type);
   return (
     <button
@@ -35,11 +36,11 @@ export default function Button({ type, classNames, onClick }: Props) {
       className={cn(
         "rounded-[50px]  p-[8px_16px] bg-green-900 w-[100px]",
         variant,
-        classNames
+        className
       )}
       onClick={onClick}
     >
-      {text}
+     {children?children:text} 
     </button>
   );
 }

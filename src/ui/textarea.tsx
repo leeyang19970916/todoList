@@ -5,13 +5,13 @@ interface Props {
     placeholder?: string,
     label: string,
     value?: string,
-    classNames?: string
+    className?: string
 }
 
 const Textarea = forwardRef<HTMLTextAreaElement, Props>(
-    ({ placeholder, label, value, classNames }, ref) => {
+    ({ placeholder, label, value, className }, ref) => {
         return (
-            <div className={cn("flex flex-col gap-3", classNames)}>
+            <div className={cn("flex flex-col gap-3", className)}>
                 <label className="text-gray-700 font-medium">
                     {label}
                     <span className="mr-1">:</span>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useLayoutEffect } from "react";
 
 function useLocalStorageSync<T>(
   key: string,
@@ -14,13 +14,13 @@ function useLocalStorageSync<T>(
     }
   });
 
-  const updateData = (newData: T) => {
-    console.log("1newData:",newData)
-    setData(() => {
-      localStorage.setItem(key, JSON.stringify(newData)); // 同步到 localStorage
-      return newData; // 确保返回更新后的数据
-    });
-  };
+  const updateData = useCallback((newData: T) => {
+    if (JSON.stringify(data) !== JSON.stringify(newData)) {
+      localStorage.setItem(key, JSON.stringify(newData));
+      setData(newData);
+    }
+  }, [data, key]);
+  
 
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
@@ -39,9 +39,15 @@ function useLocalStorageSync<T>(
       window.removeEventListener("storage", handleStorageChange);
     };
   }, [key]);
+//   useEffect(()=>{
+// console.log("應該為立即更新的data",data);
+//   },[data])
+//   useLayoutEffect(()=>{
 
-  console.log("2oldData need to update:",data)
+// console.log("useLayoutEffect,應該為立即更新的data",data);
+//   },[data])
+
+  // console.log("2oldData need to update:",data)
   return [data, updateData];
 }
-
-export default useLocalStorageSync;
+export default useLocalStorageSync

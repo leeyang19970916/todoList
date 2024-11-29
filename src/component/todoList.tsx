@@ -2,6 +2,8 @@ import React from "react";
 import cn from "classnames";
 import { todoProps } from "../App";
 import { useTodoManager } from "../hook/useTodoManager";
+import trashIcon from "../icon/trash.svg";
+import Button from "../ui/button";
 
 export function TodoList({
   classNames,
@@ -25,10 +27,9 @@ export function TodoList({
     </div>
   );
 }
-
 export function Todo({
   todo,
-  onClick:toggleOffCanVans,
+  onClick: toggleOffCanVans,
 }: {
   todo: todoProps;
   onClick: (id: todoProps["id"]) => void;
@@ -38,25 +39,34 @@ export function Todo({
 
   return (
     <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-100 hover:rounded-[12px]">
-      <div className="flex ">
+      <div className="flex items-center">
         <input
           type="checkbox"
-          checked={isCompleted}
+          defaultChecked={isCompleted}
           onChange={() => toggleIsCompleted(id)}
-          className="w-[50px]"
+          className="w-[1rem] h-[1rem] mr-[8px]"
         />
-        <div className="flex-1" onClick={() => toggleOffCanVans(id)}>
+        <span className="flex-1" onClick={() => toggleOffCanVans(id)}>
           {title}
-        </div>
-        <div
-          className="text-red-500 cursor-pointer  opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
-          onClick={() => deleteTodo(id)}
-        >
-          刪
-        </div>
+        </span>
+        { (
+          <Button
+            type="DELETE"
+            className="bg-transparent flex justify-end w-auto  p-0  opacity-1  group-hover:opacity-100 transition-opacity duration-75 "
+            onClick={() => deleteTodo(id)}
+          >
+            <img
+              className="cursor-pointer"
+              src={trashIcon}
+              height={16}
+              width={16}
+              alt="trashIcon"
+            />
+          </Button>
+        )}
       </div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-75 flex justify-between">
-        <span className="w-[50px]"></span>
+        <span className="w-[15px] mr-[8px]"></span>
         <span className="flex-1">{desc}</span>
         <span>{startDate}</span>
       </div>

@@ -14,7 +14,7 @@ export interface todoProps {
   isCompleted: boolean;
 }
 export const App: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null);
   const { getTodo } = useTodoManager();
 
@@ -22,15 +22,8 @@ export const App: React.FC = () => {
     useState<todoProps["isCompleted"]>(false);
 
   const [todoList] = useLocalStorageSync<todoProps[]>("todoList", []);
-console.log("3 todoList",todoList)
-  // const todoList = useMemo(() => {
-  //   return rawTodoList
-  // }, [rawTodoList, ]);
-  // console.log(rawTodoList, "todoList");
-//   useEffect(()=>{
-//     const q=localStorage.getItem("todolist") || ""
-// console.log("list:",JSON.parse(q));
-//   },[localStorage.getItem("todolist")])
+  // 不會即時更新
+// console.log("3 todoList",todoList)
   const handleEditTodo = (id: todoProps["id"]) => {
     setCurrentTodo(getTodo(id));
     setIsOpen(true);

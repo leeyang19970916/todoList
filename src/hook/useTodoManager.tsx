@@ -18,7 +18,7 @@ export function useTodoManager() {
       startDate: dayjs().format("YYYY/MM/DD"),
       isCompleted: false,
     };
-    updateTodoList([...todoList, newTodo]);
+    updateTodoList([newTodo,...todoList ]);
   };
 
   const editTodo = ({ id, title, desc }: editProps) => {

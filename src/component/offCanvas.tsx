@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import Input from "../ui/input";
 import Button from "../ui/button";
 import Textarea from "../ui/textarea";
-import { todoProps } from "../App";   
+import { todoProps } from "../App";
+import { useTodoManager } from "../hook/useTodoManager";
 
 interface OffCanvasProps {
   onClose: () => void;
@@ -12,11 +13,16 @@ interface OffCanvasProps {
 const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
-
+  const { addTodo, editTodo } = useTodoManager();
   const saveHandler = () => {
     const title = titleRef.current?.value || "";
     const desc = descRef.current?.value || "";
-    console.log("Saving Data:", { title, desc });
+    if (todo?.id) {
+        editTodo({ title, desc,id:todo.id})
+    }else{
+        addTodo({ title, desc });
+    }
+    addTodo({ title, desc });
     onClose();
   };
 
@@ -42,7 +48,11 @@ const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
           />
         </div>
         <div className="buttonGroup flex justify-end w-full gap-3 mt-5">
-        {todo? <Button type="EDIT" onClick={saveHandler}/>:<Button type="SAVE" onClick={saveHandler} />}  
+          {todo ? (
+            <Button type="EDIT" onClick={saveHandler} />
+          ) : (
+            <Button type="SAVE" onClick={saveHandler} />
+          )}
           <Button type="CANCEL" onClick={onClose} />
         </div>
       </div>

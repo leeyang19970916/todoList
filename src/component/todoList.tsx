@@ -3,15 +3,14 @@ import cn from "classnames";
 import { todoProps } from "../App";
 import { useTodoManager } from "../hook/useTodoManager";
 
-
 export function TodoList({
   classNames,
   onClick,
-  todoList
+  todoList,
 }: {
-  todoList:todoProps[]|null
+  todoList: todoProps[] | null;
   classNames?: string;
-  onClick: (id:todoProps["id"]) => void;
+  onClick: (id: todoProps["id"]) => void;
 }) {
   return (
     <div
@@ -29,32 +28,32 @@ export function TodoList({
 
 export function Todo({
   todo,
-  onClick,
+  onClick:toggleOffCanVans,
 }: {
   todo: todoProps;
-  onClick: (id:todoProps["id"]) => void;
+  onClick: (id: todoProps["id"]) => void;
 }) {
-  const {deleteTodo,toggleIsCompleted}=useTodoManager()
+  const { deleteTodo, toggleIsCompleted } = useTodoManager();
   const { title, desc, startDate, isCompleted, id } = todo;
 
   return (
     <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-100 hover:rounded-[12px]">
       <div className="flex ">
-      <input
-        type="checkbox"
-        checked={isCompleted}
-        onChange={() => toggleIsCompleted(id)}
-        className="w-[50px]"
-      />
-      <div className="flex-1" onClick={()=>onClick(id)}>
-        {title}
-      </div>
-      <div
-        className="text-red-500 cursor-pointer  opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
-        onClick={() => deleteTodo(id)}
-      >
-        刪
-      </div>
+        <input
+          type="checkbox"
+          checked={isCompleted}
+          onChange={() => toggleIsCompleted(id)}
+          className="w-[50px]"
+        />
+        <div className="flex-1" onClick={() => toggleOffCanVans(id)}>
+          {title}
+        </div>
+        <div
+          className="text-red-500 cursor-pointer  opacity-0  group-hover:opacity-100 transition-opacity duration-75 "
+          onClick={() => deleteTodo(id)}
+        >
+          刪
+        </div>
       </div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-75 flex justify-between">
         <span className="w-[50px]"></span>

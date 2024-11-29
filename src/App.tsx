@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { TodoList } from "./component/todoList";
 import OffCanvas from "./component/offCanvas";
 import Button from "./ui/button";
@@ -17,14 +17,20 @@ export const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null);
   const { getTodo } = useTodoManager();
+
+  const [filterIsCompleted, setFilterIsCompleted] =
+    useState<todoProps["isCompleted"]>(false);
+
   const [todoList] = useLocalStorageSync<todoProps[]>("todoList", []);
-  const [filterCompleted, setFilterCompleted] = useState<boolean | null>(null);
-
-  const handleTabChange = (name: tabProps["name"]) => {
-    const isCompleted = name === "completed" ? true : false
-    setFilterCompleted(isCompleted);
-  };
-
+console.log("3 todoList",todoList)
+  // const todoList = useMemo(() => {
+  //   return rawTodoList
+  // }, [rawTodoList, ]);
+  // console.log(rawTodoList, "todoList");
+//   useEffect(()=>{
+//     const q=localStorage.getItem("todolist") || ""
+// console.log("list:",JSON.parse(q));
+//   },[localStorage.getItem("todolist")])
   const handleEditTodo = (id: todoProps["id"]) => {
     setCurrentTodo(getTodo(id));
     setIsOpen(true);
@@ -33,11 +39,6 @@ export const App: React.FC = () => {
   const handleAddTodo = () => {
     setCurrentTodo(null);
     setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    setCurrentTodo(null);
   };
 
   return (
@@ -49,18 +50,20 @@ export const App: React.FC = () => {
         <div className="w-[750px] flex justify-end">
           <Button type="ADD" onClick={handleAddTodo} />
         </div>
-        <TabList onTabChange={handleTabChange} />
+        <TabList
+          onTabChange={(name: tabProps["name"]) =>
+            setFilterIsCompleted(name === "completed" ? true : false)
+          }
+        />
         <TodoList
-          todoList={filterCompleted === null ? todoList : todoList.filter(todo => todo.isCompleted === filterCompleted)}
+          todoList={filterIsCompleted === null ? todoList : todoList.filter(todo => todo.isCompleted === filterIsCompleted)}
+          
           classNames="w-[750px]"
           onClick={handleEditTodo}
         />
       </div>
       {isOpen && (
-        <OffCanvas
-          onClose={handleClose}
-          todo={currentTodo}
-        />
+        <OffCanvas onClose={() => setIsOpen(false)} todo={currentTodo} />
       )}
     </div>
   );

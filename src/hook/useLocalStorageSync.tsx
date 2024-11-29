@@ -4,6 +4,7 @@ function useLocalStorageSync<T>(
   key: string,
   defaultValue: T
 ): [T, (data: T) => void] {
+  // const [isUpdate,setIsUpdate]=useState(false)
   const [data, setData] = useState<T>(() => {
     try {
       const storedData = localStorage.getItem(key);
@@ -15,9 +16,10 @@ function useLocalStorageSync<T>(
   });
 
   const updateData = useCallback((newData: T) => {
+    // setIsUpdate(prev=>!prev)
     setData((prevData) => {
       if (JSON.stringify(prevData) !== JSON.stringify(newData)) {
-        console.log("Updating state from:", prevData, "to:", newData);
+        console.log("Updating state from:", prevData, "to:", newData,newData===prevData);
         localStorage.setItem(key, JSON.stringify(newData));
         return newData;
       }
@@ -43,13 +45,13 @@ function useLocalStorageSync<T>(
     };
   }, [key]);
 
-  useLayoutEffect(() => {
-    console.log("useLayoutEffect: data updated:", data);
-  }, [data]);
+  // useLayoutEffect(() => {
+  //   console.log("useLayoutEffect: data updated:", data);
+  // }, [data]);
 
-  useEffect(() => {
-    console.log("useEffect: data updated:", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("useEffect: data updated:", isUpdate);
+  // }, [isUpdate]);
 
   return [data, updateData];
 }

@@ -17,7 +17,7 @@ export const TodoList = ({
   return (
     <div
       className={cn(
-        "border border-gray-200 bg-gray-100 rounded-[0_0_12px_12px] h-[500px] p-[16px_12px] flex flex-col overflow-y-scroll",
+        "border border-gray-200 bg-gray-100 rounded-[0_12px_12px_12px] h-[500px] p-[16px_12px] flex flex-col overflow-y-scroll",
         className
       )}
     >
@@ -26,7 +26,7 @@ export const TodoList = ({
           <Todo key={todo.id} todo={todo} onClick={onClick} />
         ))
       ) : (
-        <p className="py-2 text-center">無待辦事項</p>
+        <p className="py-2 text-slate-700 text-center">無待辦事項</p>
       )}
     </div>
   );
@@ -39,7 +39,7 @@ export const Todo = ({
   todo: todoProps;
   onClick: (id: todoProps["id"]) => void;
 }) => {
-  const { deleteTodo, toggleIsCompleted } = useTodoManager();
+  const {deleteTodo, toggleIsCompleted } = useTodoManager();
   const { title, desc, startDate, isCompleted, id } = todo;
 
   const handleToggleCompleted = useCallback(() => {
@@ -64,7 +64,7 @@ export const Todo = ({
         </span>
         <Button
           type="DELETE"
-          className=" flex justify-end w-auto p-0 opacity-1 group-hover:opacity-100 transition-opacity duration-75"
+          className=" flex justify-end w-auto p-[0_0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
           onClick={handleDeleteTodo}
         >
           <img

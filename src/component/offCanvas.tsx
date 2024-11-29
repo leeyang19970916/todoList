@@ -13,7 +13,7 @@ interface OffCanvasProps {
 const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
-  const { addTodo, editTodo } = useTodoManager();
+  const {addTodo, editTodo } = useTodoManager();
   const saveHandler = () => {
     const title = titleRef.current?.value || "";
     const desc = descRef.current?.value || "";
@@ -22,7 +22,6 @@ const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
     } else {
       addTodo({ title, desc });
     }
-    addTodo({ title, desc });
     onClose();
   };
 
@@ -32,7 +31,7 @@ const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
         className="fixed top-0 bottom-0 right-0 left-0 bg-black opacity-10"
         onClick={onClose}
       ></div>
-      <div className="absolute w-[500px] top-0 bottom-0 right-0 p-[1rem] bg-slate-100 border-[2px] border-l-black">
+      <div className="absolute w-[500px] top-0 bottom-0 right-0 p-[1rem] bg-slate-100 border-[2px] border-l-slate-400">
         <div className="flex flex-col gap-4">
           <Input
             ref={titleRef}

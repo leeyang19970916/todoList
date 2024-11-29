@@ -16,10 +16,10 @@ export interface todoProps {
 export const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null);
-  const { getTodo } = useTodoManager();
+  const {data:todoList ,getTodo } = useTodoManager();
 
   const [filterIsCompleted, setFilterIsCompleted] =useState<todoProps["isCompleted"]>(false);
-  const [todoList] = useLocalStorageSync<todoProps[]>("todoList", []);
+  // const [todoList] = useLocalStorageSync<todoProps[]>("todoList", []);
   const handleEditTodo = useCallback(
     (id: todoProps["id"]) => {
       setCurrentTodo(getTodo(id));
@@ -31,7 +31,7 @@ export const App: React.FC = () => {
     setCurrentTodo(null);
     setIsOpen(true);
   }, [currentTodo]);
-
+console.log("能不能跟上render todoList:",todoList)
   return (
     <div className="relative h-[100vh] flex flex-col flex-nowrap">
       <div className="p-[1rem_3rem] bg-gray-100">
@@ -51,7 +51,7 @@ export const App: React.FC = () => {
             filterIsCompleted === null
               ? todoList
               : todoList.filter(
-                  (todo) => todo.isCompleted === filterIsCompleted
+                  (todo:todoProps) => todo.isCompleted === filterIsCompleted
                 )
           }
           className="w-[750px]"

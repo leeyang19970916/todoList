@@ -49,7 +49,7 @@ export function Tab({
       onClick={() => onClick(index)}
       className={cn(
         "flex items-center justify-center cursor-pointer w-[200px]  rounded-[16px_16px_0_0]  py-[8px]  ",
-        tab.isActive ? "text-white  bg-gray-500 " : "text-black bg-gray-200"
+        tab.isActive ? "text-white  bg-gray-500 " : "text-slate-900 bg-gray-200"
       )}
     >
       {tab.name === "inProgress" ? "進行中" : "完成"}

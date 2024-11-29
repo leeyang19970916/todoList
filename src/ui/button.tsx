@@ -9,23 +9,23 @@ interface Props {
   children?:ReactNode
 }
 const ADD = {
-  variant: "bg-blue-900 text-white",
+  variant: "bg-blue-500 text-white hover:bg-blue-700",
   text: "新增 +",
 };
 const SAVE = {
-  variant: "bg-green-900 text-white",
+  variant: "bg-green-500 text-white hover:bg-green-700",
   text: "儲存",
 };
 const DELETE = {
-  variant: "bg-red-900 text-white",
+  variant: "",
   text: "刪除",
 };
 const EDIT = {
-  variant: "bg-pink-900 text-white",
+  variant: "bg-pink-500 text-white hover:bg-pink-700",
   text: "編輯",
 };
 const CANCEL = {
-  variant: "bg-red-900 text-white",
+  variant: "bg-red-500 text-white hover:bg-red-700",
   text: "取消",
 };
 export default function Button({ type, className, onClick,children }: Props) {
@@ -34,7 +34,7 @@ export default function Button({ type, className, onClick,children }: Props) {
     <button
       type="button"
       className={cn(
-        "rounded-[50px]  p-[8px_16px] bg-green-900 w-[100px]",
+        "rounded-[50px] p-[8px_16px] w-[100px]",
         variant,
         className
       )}

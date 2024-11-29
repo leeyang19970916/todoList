@@ -18,9 +18,9 @@ const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
     const title = titleRef.current?.value || "";
     const desc = descRef.current?.value || "";
     if (todo?.id) {
-        editTodo({ title, desc,id:todo.id})
-    }else{
-        addTodo({ title, desc });
+      editTodo({ title, desc, id: todo.id });
+    } else {
+      addTodo({ title, desc });
     }
     addTodo({ title, desc });
     onClose();
@@ -46,12 +46,17 @@ const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
             label="備註"
             value={todo?.desc || ""}
           />
+          {todo ? (
+            <div className="text-end text-gray-500">
+              建立日期: {todo.startDate}
+            </div>
+          ) : null}
         </div>
         <div className="buttonGroup flex justify-end w-full gap-3 mt-5">
           {todo ? (
-            <Button type="EDIT" onClick={saveHandler} />
+            <Button className="w-[200px]" type="EDIT" onClick={saveHandler} />
           ) : (
-            <Button type="SAVE" onClick={saveHandler} />
+            <Button className="w-[200px]" type="SAVE" onClick={saveHandler} />
           )}
           <Button type="CANCEL" onClick={onClose} />
         </div>

@@ -1,6 +1,9 @@
 import dayjs from "dayjs";
 import { todoProps } from "../App";
 import useLocalStorageSync from "./useLocalStorageSync";
+import { useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 
 type addProps = Pick<todoProps, "title" | "desc">;
 type deleteProps = todoProps["id"];
@@ -10,20 +13,19 @@ export function useTodoManager() {
 
   const [todoList, updateTodoList] = useLocalStorageSync<todoProps[]>("todoList", []);
 
-  const addTodo = ({ title, desc }: addProps) => {
-    console.log("add")
+  const addTodo = useCallback(({ title, desc }: addProps) => {
     const newTodo: todoProps = {
-      id: Math.random(), 
+      id: uuidv4(),
       title,
       desc,
       startDate: dayjs().format("YYYY/MM/DD"),
       isCompleted: false,
     };
-    updateTodoList([newTodo,...todoList ]);
-  };
+    updateTodoList([newTodo, ...todoList]);
+  }, [updateTodoList]);
+  
 
   const editTodo = ({ id, title, desc }: editProps) => {
-    console.log("edit")
     const updatedList = todoList.map((todo) =>
       todo.id === id ? { ...todo, title, desc } : todo
     );
@@ -31,13 +33,11 @@ export function useTodoManager() {
   };
 
   const deleteTodo = (id: deleteProps) => {
-    console.log("delete")
     const updatedList = todoList.filter((todo) => todo.id !== id);
     updateTodoList(updatedList);
   };
 
   const toggleIsCompleted = (id: todoProps["id"]) => {
-    console.log("add")
     const updatedList = todoList.map((todo) =>
       todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );

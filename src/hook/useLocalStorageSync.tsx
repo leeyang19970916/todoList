@@ -15,12 +15,15 @@ function useLocalStorageSync<T>(
   });
 
   const updateData = useCallback((newData: T) => {
-    if (JSON.stringify(data) !== JSON.stringify(newData)) {
-      localStorage.setItem(key, JSON.stringify(newData));
-      setData(newData);
-    }
-  }, [data, key]);
-  
+    setData((prevData) => {
+      if (JSON.stringify(prevData) !== JSON.stringify(newData)) {
+        console.log("Updating state from:", prevData, "to:", newData);
+        localStorage.setItem(key, JSON.stringify(newData));
+        return newData;
+      }
+      return prevData;
+    });
+  }, [key]);
 
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
@@ -39,15 +42,16 @@ function useLocalStorageSync<T>(
       window.removeEventListener("storage", handleStorageChange);
     };
   }, [key]);
-//   useEffect(()=>{
-// console.log("應該為立即更新的data",data);
-//   },[data])
-//   useLayoutEffect(()=>{
 
-// console.log("useLayoutEffect,應該為立即更新的data",data);
-//   },[data])
+  useLayoutEffect(() => {
+    console.log("useLayoutEffect: data updated:", data);
+  }, [data]);
 
-  // console.log("2oldData need to update:",data)
+  useEffect(() => {
+    console.log("useEffect: data updated:", data);
+  }, [data]);
+
   return [data, updateData];
 }
-export default useLocalStorageSync
+
+export default useLocalStorageSync;

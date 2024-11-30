@@ -29,11 +29,9 @@ export function useTodoManager() {
 
 
   const toggleTodoIsCompleted = (id: T["id"]) => {
-    
     updateTodoList(todoList.map((todo: T) =>
     todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
   ));
-    // setTimeout
   };
   const getTodo = (id: T["id"]) =>todoList.find((todo: T) => todo.id === id) || null;
   return {
@@ -46,12 +44,3 @@ export function useTodoManager() {
   };
 }
 
-// diaLog{
-// (title block/ save /edit /delete)
-// }
-
-// todoProps united
-
-// useContext united
-
-// declare function name /variable

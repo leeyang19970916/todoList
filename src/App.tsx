@@ -20,10 +20,10 @@ export const App: React.FC = () => {
 
   // 使用 Context 获取数据和方法
   const { data: todoList } = useTodoContext();
-  const {getTodo}=useTodoManager()
+  const { getTodo } = useTodoManager();
 
   const [filterIsCompleted, setFilterIsCompleted] =
-    useState<todoProps["isCompleted"] | null>(null);
+    useState<todoProps["isCompleted"]>(false);
 
   const handleEditTodo = useCallback(
     (id: todoProps["id"]) => {
@@ -37,7 +37,7 @@ export const App: React.FC = () => {
     setCurrentTodo(null);
     setIsOpen(true);
   }, []);
-console.log(todoList,"todoList")
+  console.log(todoList, "todoList");
   return (
     <div className="relative h-[100vh] flex flex-col flex-nowrap">
       <div className="p-[1rem_3rem] bg-gray-100">
@@ -53,13 +53,9 @@ console.log(todoList,"todoList")
           }
         />
         <TodoList
-          todoList={
-            filterIsCompleted === null
-              ? todoList 
-              : todoList.filter(
-                  (todo:todoProps) => todo.isCompleted === filterIsCompleted
-                )
-          }
+          todoList={todoList.filter(
+            (todo: todoProps) => todo.isCompleted === filterIsCompleted
+          )}
           className="w-[750px]"
           onClick={handleEditTodo}
         />

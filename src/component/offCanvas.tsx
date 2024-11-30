@@ -17,6 +17,8 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
   const handleSaveTodo = () => {
     const title = titleRef.current?.value || "";
     const desc = descRef.current?.value || "";
+    if (!title) return
+    
     if (todo?.id) {
       editTodo({ title, desc, id: todo.id });
     } else {

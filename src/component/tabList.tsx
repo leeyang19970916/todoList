@@ -1,13 +1,13 @@
 import cn from "classnames"
-import React, { useState } from "react"
+import { useState } from "react"
 
-export interface tabProps {
+export interface TabProps {
   name: "inProgress" | "completed",
   isActive: boolean,
 }
 
 
-const TABLIST: tabProps[] = [
+const TABLIST: TabProps[] = [
   {
     name: "inProgress",
     isActive: true
@@ -16,7 +16,7 @@ const TABLIST: tabProps[] = [
     isActive: false
   }
 ]
-export  function TabList({ classNames, onTabChange }: { classNames?: string, onTabChange: (name: tabProps["name"]) => void }) {
+export  function TabList({ classNames, onTabChange }: { classNames?: string, onTabChange: (name: TabProps["name"]) => void }) {
   const [tabList, setTabList] = useState(TABLIST)
   const handleTabClick = (index: number) => {
     if (tabList[index].isActive) return;
@@ -39,7 +39,7 @@ export function Tab({
   index,
   onClick,
 }: {
-  tab: tabProps;
+  tab: TabProps;
   index: number;
   onClick: (index: number) => void;
 }) {

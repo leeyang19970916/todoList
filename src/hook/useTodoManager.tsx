@@ -1,18 +1,16 @@
 import dayjs from "dayjs";
-import { todoProps } from "../App";
-import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useTodoContext } from "../store/todoListContext";
+import { useTodoContext, TodoProps as T } from "../store/todoContext";
 
-type addProps = Pick<todoProps, "title" | "desc">;
-type deleteProps = todoProps["id"];
-type editProps = Pick<todoProps, "id" | "title" | "desc">;
+type AddProps = Pick<T, "title" | "desc">;
+type DeleteProps = T["id"];
+type EditProps = Pick<T, "id" | "title" | "desc">;
 
 export function useTodoManager() {
-  const { data, updateTodoList } = useTodoContext();
-  
-  const addTodo = ({ title, desc }: addProps) => {
-    const newTodo: todoProps = {
+  const { todoList, updateTodoList } = useTodoContext();
+
+  const addTodo = ({ title, desc }: AddProps) => {
+    const newTodo: T = {
       id: uuidv4(),
       title,
       desc,
@@ -20,37 +18,37 @@ export function useTodoManager() {
       isCompleted: false,
     };
     console.log("add");
-    updateTodoList([newTodo, ...data]);
+    updateTodoList([newTodo, ...todoList]);
   };
 
-  const editTodo = ({ id, title, desc }: editProps) => {
+  const editTodo = ({ id, title, desc }: EditProps) => {
     console.log("edit");
-    const updatedList = data.map((todo: todoProps) =>
+    const updatedList = todoList.map((todo: T) =>
       todo.id === id ? { ...todo, title, desc } : todo
     );
     updateTodoList(updatedList);
   };
 
-  const deleteTodo = (id: deleteProps) => {
-    const updatedList = data.filter((todo: todoProps) => todo.id !== id);
+  const deleteTodo = (id: DeleteProps) => {
+    const updatedList = todoList.filter((todo: T) => todo.id !== id);
     console.log("delete id:", id, "in deleteTodo func");
     updateTodoList(updatedList);
   };
 
-  const toggleIsCompleted = (id: todoProps["id"]) => {
+  const toggleIsCompleted = (id: T["id"]) => {
     console.log("isCompleted");
-    const updatedList = data.map((todo: todoProps) =>
+    const updatedList = todoList.map((todo: T) =>
       todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );
     updateTodoList(updatedList);
+    // setTimeout
   };
 
-  const getTodo = (id: todoProps["id"]) => {
-    return data.find((todo: todoProps) => todo.id === id) || null;
+  const getTodo = (id: T["id"]) => {
+    return todoList.find((todo: T) => todo.id === id) || null;
   };
-  console.log("data最新的1:", data);
   return {
-    data,
+    todoList,
     addTodo,
     editTodo,
     deleteTodo,
@@ -58,3 +56,13 @@ export function useTodoManager() {
     getTodo,
   };
 }
+
+// diaLog{
+// (title block/ save /edit /delete)
+// }
+
+// todoProps united
+
+// useContext united
+
+// declare function name /variable

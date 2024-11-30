@@ -1,5 +1,5 @@
 import cn from "classnames"
-import React, { forwardRef } from "react"
+import { forwardRef } from "react"
 
 interface Props {
     placeholder?: string,
@@ -7,7 +7,6 @@ interface Props {
     value?: string,
     className?: string
 }
-
 const Textarea = forwardRef<HTMLTextAreaElement, Props>(
     ({ placeholder, label, value, className }, ref) => {
         return (
@@ -26,7 +25,5 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>(
         );
     }
 );
-
 Textarea.displayName = "Textarea";
-
 export default Textarea

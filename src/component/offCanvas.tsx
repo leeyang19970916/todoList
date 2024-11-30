@@ -2,15 +2,15 @@ import React, { useRef } from "react";
 import Input from "../ui/input";
 import Button from "../ui/button";
 import Textarea from "../ui/textarea";
-import { todoProps } from "../App";
+import { TodoProps as T } from "../store/todoContext";
 import { useTodoManager } from "../hook/useTodoManager";
 
-interface OffCanvasProps {
+interface Props {
   onClose: () => void;
-  todo: todoProps | null;
+  todo: T | null;
 }
 
-const OffCanvas: React.FC<OffCanvasProps> = ({ onClose, todo }) => {
+const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const {addTodo, editTodo } = useTodoManager();

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import cn from "classnames";
-import { todoProps } from "../App";
-import { useTodoManager } from "../hook/useTodoManager";
+import {TodoProps as T} from "../store/todoContext"
+import { useTodoManager, } from "../hook/useTodoManager";
 import trashIcon from "../icon/trash.svg";
 import Button from "../ui/button";
 
@@ -10,9 +10,9 @@ export const TodoList = ({
   onClick,
   todoList,
 }: {
-  todoList: todoProps[] | null;
+  todoList: T[] | null;
   className?: string;
-  onClick: (id: todoProps["id"]) => void;
+  onClick: (id: T["id"]) => void;
 }) => {
   return (
     <div
@@ -36,8 +36,8 @@ export const Todo = ({
   todo,
   onClick: toggleOffCanVans,
 }: {
-  todo: todoProps;
-  onClick: (id: todoProps["id"]) => void;
+  todo: T;
+  onClick: (id: T["id"]) => void;
 }) => {
   const {deleteTodo, toggleIsCompleted } = useTodoManager();
   const { title, desc, startDate, isCompleted, id } = todo;

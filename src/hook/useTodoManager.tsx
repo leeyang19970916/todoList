@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import { useTodoContext, TodoProps as T } from "../store/todoContext";
+import DiaLog from "../component/DiaLog";
 
 type AddProps = Pick<T, "title" | "desc">;
 type DeleteProps = T["id"];
@@ -18,6 +19,7 @@ export function useTodoManager() {
       isCompleted: false,
     };
     updateTodoList([newTodo, ...todoList]);
+
   };
   const editTodo = ({ id, title, desc }: EditProps) => {
     updateTodoList(todoList.map((todo: T) =>

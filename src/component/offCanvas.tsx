@@ -27,6 +27,7 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
       addTodo({ title, desc });
     }
     onClose();
+    // handleDiaLog({})
   };
 
   return (

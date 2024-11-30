@@ -1,4 +1,3 @@
-import React, { useCallback } from "react";
 import cn from "classnames";
 import {TodoProps as T} from "../store/todoContext"
 import { useTodoManager, } from "../hook/useTodoManager";
@@ -6,22 +5,22 @@ import trashIcon from "../icon/trash.svg";
 import Button from "../ui/button";
 
 export const TodoList = ({
-  className,
+  classNames,
   onClick,
   todoList,
 }: {
   todoList: T[] | null;
-  className?: string;
+  classNames?: string;
   onClick: (id: T["id"]) => void;
 }) => {
   return (
     <div
       className={cn(
         "border border-gray-200 bg-gray-100 rounded-[0_12px_12px_12px] h-[500px] p-[16px_12px] flex flex-col overflow-y-scroll",
-        className
+        classNames
       )}
     >
-      {todoList?.length ? (
+      {todoList? (
         todoList.map((todo) => (
           <Todo key={todo.id} todo={todo} onClick={onClick} />
         ))
@@ -39,16 +38,9 @@ export const Todo = ({
   todo: T;
   onClick: (id: T["id"]) => void;
 }) => {
-  const {deleteTodo, toggleIsCompleted } = useTodoManager();
+  const {deleteTodo, toggleTodoIsCompleted } = useTodoManager();
   const { title, desc, startDate, isCompleted, id } = todo;
 
-  const handleToggleCompleted = useCallback(() => {
-    toggleIsCompleted(id);
-  }, [id, toggleIsCompleted]);
-
-  const handleDeleteTodo = useCallback(() => {
-    deleteTodo(id);
-  }, [id, deleteTodo]);
 
   return (
     <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-400 hover:text-white hover:rounded-[12px]">
@@ -56,7 +48,7 @@ export const Todo = ({
         <input
           type="checkbox"
           checked={isCompleted}
-          onChange={handleToggleCompleted}
+          onChange={()=>toggleTodoIsCompleted(id)}
           className="w-[1rem] h-[1rem] mr-[8px]"
         />
         <span className="flex-1" onClick={() => toggleOffCanVans(id)}>
@@ -64,8 +56,8 @@ export const Todo = ({
         </span>
         <Button
           type="DELETE"
-          className=" flex justify-end w-auto p-[0_0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
-          onClick={handleDeleteTodo}
+          classNames=" flex justify-end w-auto p-[0_0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
+          onClick={()=>deleteTodo(id)}
         >
           <img
             src={trashIcon || "/fallback-icon.svg"}

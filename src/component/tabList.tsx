@@ -6,8 +6,7 @@ export interface TabProps {
   isActive: boolean,
 }
 
-
-const TABLIST: TabProps[] = [
+const initialTabList: TabProps[] = [
   {
     name: "inProgress",
     isActive: true
@@ -17,12 +16,11 @@ const TABLIST: TabProps[] = [
   }
 ]
 export  function TabList({ classNames, onTabChange }: { classNames?: string, onTabChange: (name: TabProps["name"]) => void }) {
-  const [tabList, setTabList] = useState(TABLIST)
+  const [tabList, setTabList] = useState(initialTabList)
   const handleTabClick = (index: number) => {
     if (tabList[index].isActive) return;
-
-    setTabList((prev) =>
-      prev.map((tab, i) => ({
+    setTabList((prevTab) =>
+    prevTab.map((tab, i) => ({
         ...tab,
         isActive: i === index,
       }))

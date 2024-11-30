@@ -1,8 +1,6 @@
 import React from "react";
-
 import { TodoProvider} from "./store/todoContext";
-
-import TodoContainer from "./component/TodoContainer";
+import TodoContainer from "./component/todoContainer";
 
 export const App: React.FC = () => {
   return (

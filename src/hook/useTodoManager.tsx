@@ -17,42 +17,31 @@ export function useTodoManager() {
       startDate: dayjs().format("YYYY/MM/DD"),
       isCompleted: false,
     };
-    console.log("add");
     updateTodoList([newTodo, ...todoList]);
   };
-
   const editTodo = ({ id, title, desc }: EditProps) => {
-    console.log("edit");
-    const updatedList = todoList.map((todo: T) =>
-      todo.id === id ? { ...todo, title, desc } : todo
-    );
-    updateTodoList(updatedList);
+    updateTodoList(todoList.map((todo: T) =>
+    todo.id === id ? { ...todo, title, desc } : todo
+  ));
   };
+  const deleteTodo = (id: DeleteProps) => 
+   updateTodoList(todoList.filter((todo: T) => todo.id !== id));
 
-  const deleteTodo = (id: DeleteProps) => {
-    const updatedList = todoList.filter((todo: T) => todo.id !== id);
-    console.log("delete id:", id, "in deleteTodo func");
-    updateTodoList(updatedList);
-  };
 
-  const toggleIsCompleted = (id: T["id"]) => {
-    console.log("isCompleted");
-    const updatedList = todoList.map((todo: T) =>
-      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
-    );
-    updateTodoList(updatedList);
+  const toggleTodoIsCompleted = (id: T["id"]) => {
+    
+    updateTodoList(todoList.map((todo: T) =>
+    todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+  ));
     // setTimeout
   };
-
-  const getTodo = (id: T["id"]) => {
-    return todoList.find((todo: T) => todo.id === id) || null;
-  };
+  const getTodo = (id: T["id"]) =>todoList.find((todo: T) => todo.id === id) || null;
   return {
     todoList,
     addTodo,
     editTodo,
     deleteTodo,
-    toggleIsCompleted,
+    toggleTodoIsCompleted,
     getTodo,
   };
 }

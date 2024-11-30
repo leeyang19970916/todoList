@@ -14,7 +14,7 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const {addTodo, editTodo } = useTodoManager();
-  const saveHandler = () => {
+  const handleSaveTodo = () => {
     const title = titleRef.current?.value || "";
     const desc = descRef.current?.value || "";
     if (todo?.id) {
@@ -53,9 +53,9 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
         </div>
         <div className="buttonGroup flex justify-end w-full gap-3 mt-5">
           {todo ? (
-            <Button className="w-[200px]" type="EDIT" onClick={saveHandler} />
+            <Button classNames="w-[200px]" type="EDIT" onClick={handleSaveTodo} />
           ) : (
-            <Button className="w-[200px]" type="SAVE" onClick={saveHandler} />
+            <Button classNames="w-[200px]" type="SAVE" onClick={handleSaveTodo} />
           )}
           <Button type="CANCEL" onClick={onClose} />
         </div>

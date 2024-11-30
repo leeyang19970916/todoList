@@ -43,7 +43,7 @@ export const Todo = ({
 
 
   return (
-    <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-400 hover:text-white hover:rounded-[12px]">
+    <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-200 hover:text-slate-600 hover:rounded-[12px]">
       <div className="flex items-center">
         <input
           type="checkbox"
@@ -51,12 +51,12 @@ export const Todo = ({
           onChange={()=>toggleTodoIsCompleted(id)}
           className="w-[1rem] h-[1rem] mr-[8px]"
         />
-        <span className="flex-1" onClick={() => toggleOffCanVans(id)}>
+        <span className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem]" onClick={() => toggleOffCanVans(id)}>
           {title}
         </span>
         <Button
           type="DELETE"
-          classNames=" flex justify-end w-auto p-[0_0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
+          classNames="flex justify-end w-auto !p-[0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
           onClick={()=>deleteTodo(id)}
         >
           <img
@@ -69,7 +69,7 @@ export const Todo = ({
       </div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-75 flex justify-between">
         <span className="w-[15px] mr-[8px]"></span>
-        <span className="flex-1">{desc}</span>
+        <span className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem]">{desc}</span>
         <span>{startDate}</span>
       </div>
     </div>

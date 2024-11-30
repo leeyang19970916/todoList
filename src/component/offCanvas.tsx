@@ -15,9 +15,12 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
   const descRef = useRef<HTMLTextAreaElement>(null);
   const {addTodo, editTodo } = useTodoManager();
   const handleSaveTodo = () => {
-    const title = titleRef.current?.value || "";
-    const desc = descRef.current?.value || "";
-    if (!title) return
+    const title = titleRef.current?.value.trim() || "";
+    const desc = descRef.current?.value.trim() || "";
+    if (!title){
+      alert("標題不能為空值")
+      return
+    }  
     
     if (todo?.id) {
       editTodo({ title, desc, id: todo.id });

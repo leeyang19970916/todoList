@@ -1,39 +1,16 @@
 import dayjs from "dayjs";
 import { todoProps } from "../App";
-// import useLocalStorageSync from "./useLocalStorageSync";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useTodoContext } from "../store/todoListContext";
 
 type addProps = Pick<todoProps, "title" | "desc">;
 type deleteProps = todoProps["id"];
 type editProps = Pick<todoProps, "id" | "title" | "desc">;
 
-// export
-
 export function useTodoManager() {
-  // const [is,setis]=useState(localStorage)
-  // const [todoList, updateTodoList] = useLocalStorageSync<todoProps[]>("todoList", []);
-  const [data, setData] = useState(() => {
-    try {
-      const storedData = localStorage.getItem("todoList");
-      return storedData ? JSON.parse(storedData) : [];
-    } catch {
-      console.error("Failed to parse localStorage data");
-      return [];
-    }
-  });
-
-  const updateTodoList = (newData: todoProps[]) => {
-    setData((prevData: todoProps[]) => {
-      console.log(JSON.stringify(newData) === JSON.stringify(prevData));
-      if (JSON.stringify(prevData) !== JSON.stringify(newData)) {
-        localStorage.setItem("todoList", JSON.stringify(newData));
-        return newData;
-      }
-      return prevData;
-    });
-  };
-
+  const { data, updateTodoList } = useTodoContext();
+  
   const addTodo = ({ title, desc }: addProps) => {
     const newTodo: todoProps = {
       id: uuidv4(),
@@ -56,8 +33,7 @@ export function useTodoManager() {
 
   const deleteTodo = (id: deleteProps) => {
     const updatedList = data.filter((todo: todoProps) => todo.id !== id);
-
-    console.log("delete","data:",data,"updateList",updatedList);
+    console.log("delete id:", id, "in deleteTodo func");
     updateTodoList(updatedList);
   };
 
@@ -72,10 +48,7 @@ export function useTodoManager() {
   const getTodo = (id: todoProps["id"]) => {
     return data.find((todo: todoProps) => todo.id === id) || null;
   };
-  useEffect(() => {
-    console.log("觸發 轉換更新 data:", data);
-  }, [data]);
-
+  console.log("data最新的1:", data);
   return {
     data,
     addTodo,

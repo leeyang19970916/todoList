@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { TodoList } from "./component/todoList";
 import OffCanvas from "./component/offCanvas";
 import Button from "./ui/button";
 import { tabProps, TabList } from "./component/tabList";
+import { useTodoContext } from "./store/todoListContext";
 import { useTodoManager } from "./hook/useTodoManager";
-import useLocalStorageSync from "./hook/useLocalStorageSync";
 
 export interface todoProps {
   id: string;
@@ -13,25 +13,31 @@ export interface todoProps {
   startDate: string;
   isCompleted: boolean;
 }
+
 export const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentTodo, setCurrentTodo] = useState<todoProps | null>(null);
-  const {data:todoList ,getTodo } = useTodoManager();
 
-  const [filterIsCompleted, setFilterIsCompleted] =useState<todoProps["isCompleted"]>(false);
-  // const [todoList] = useLocalStorageSync<todoProps[]>("todoList", []);
+  // 使用 Context 获取数据和方法
+  const { data: todoList } = useTodoContext();
+  const {getTodo}=useTodoManager()
+
+  const [filterIsCompleted, setFilterIsCompleted] =
+    useState<todoProps["isCompleted"] | null>(null);
+
   const handleEditTodo = useCallback(
     (id: todoProps["id"]) => {
       setCurrentTodo(getTodo(id));
       setIsOpen(true);
     },
-    [currentTodo]
+    [getTodo]
   );
+
   const handleAddTodo = useCallback(() => {
     setCurrentTodo(null);
     setIsOpen(true);
-  }, [currentTodo]);
-console.log("能不能跟上render todoList:",todoList)
+  }, []);
+console.log(todoList,"todoList")
   return (
     <div className="relative h-[100vh] flex flex-col flex-nowrap">
       <div className="p-[1rem_3rem] bg-gray-100">
@@ -49,7 +55,7 @@ console.log("能不能跟上render todoList:",todoList)
         <TodoList
           todoList={
             filterIsCompleted === null
-              ? todoList
+              ? todoList 
               : todoList.filter(
                   (todo:todoProps) => todo.isCompleted === filterIsCompleted
                 )

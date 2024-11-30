@@ -1,7 +1,7 @@
 
 # Getting Started with Visit Website
 
-[click Here](https://leeyang19970916.github.io/todoList/index.html).
+[Here](https://leeyang19970916.github.io/todoList/index.html).
 
 
 # Getting Started with Create React App

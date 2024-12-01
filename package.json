@@ -2,7 +2,7 @@
   "name": "todolist",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://leeyang19970916.github.io/todoList/index.html",
+  "homepage": "https://leeyang19970916.github.io/todoList",
   "type": "module",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",

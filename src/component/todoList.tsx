@@ -51,7 +51,7 @@ export const Todo = ({
           className="w-[1rem] h-[1rem] mr-[8px]"
         />
         <span
-          className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem]"
+          className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem] cursor-pointer"
           onClick={() => toggleOffCanVans(id)}
         >
           {title}

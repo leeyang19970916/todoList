@@ -21,7 +21,6 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
       alert("標題不能為空值")
       return
     }  
-    
     if (todo?.id) {
       editTodo({ title, desc, id: todo.id });
     } else {

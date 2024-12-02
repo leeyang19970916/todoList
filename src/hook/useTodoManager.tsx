@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import { useTodoContext, TodoProps as T } from "../store/todoContext";
-import DiaLog from "../component/DiaLog";
+// import DiaLog from "../component/DiaLog";
 
 type AddProps = Pick<T, "title" | "desc">;
 type DeleteProps = T["id"];

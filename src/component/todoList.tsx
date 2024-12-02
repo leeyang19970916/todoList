@@ -51,7 +51,7 @@ export const Todo = ({
           className="w-[1rem] h-[1rem] mr-[8px]"
         />
         <span
-          className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem] cursor-pointer"
+          className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem] cursor-pointer whitespace-nowrap"
           onClick={() => toggleOffCanVans(id)}
         >
           {title}
@@ -71,7 +71,7 @@ export const Todo = ({
       </div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-75 flex justify-between">
         <span className="w-[15px] mr-[8px]"></span>
-        <span className="flex-1 flex-nowrap text-ellipsis overflow-hidden pr-[1rem]">
+        <span className="flex-1 flex-nowrap whitespace-nowrap text-ellipsis overflow-hidden pr-[1rem]">
           {desc}
         </span>
         <span>{startDate}</span>

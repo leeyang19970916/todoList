@@ -18,7 +18,7 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
     const title = titleRef.current?.value.trim() || "";
     const desc = descRef.current?.value.trim() || "";
     if (!title){
-      alert("標題不能為空值")
+      alert("請輸入標題")
       return
     }  
     if (todo?.id) {

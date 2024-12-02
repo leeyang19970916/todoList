@@ -1,7 +1,7 @@
 
-# Getting Started with Visit Website
+# Visit Website
 
-[Clink Me](https://leeyang19970916.github.io/todoList/index.html).
+[Clink Me](https://leeyang19970916.github.io/todoList/index.html)
 
 
 # Getting Started with Create React App

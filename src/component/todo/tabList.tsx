@@ -1,5 +1,5 @@
 import cn from "classnames"
-import { useState } from "react"
+import React ,{ useState } from "react"
 
 export interface TabProps {
   name: "inProgress" | "completed",

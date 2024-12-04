@@ -1,10 +1,10 @@
 import React, {useState } from "react";
-import { TodoProps as T } from "../store/todoContext";
-import { useTodoManager } from "../hook/useTodoManager";
+import { TodoProps as T } from "../../store/todoContext";
+import { useTodoManager } from "../../hook/useTodoManager";
 import { TabList, TabProps } from "./tabList";
 import { TodoList } from "./todoList";
-import OffCanvas from "./offCanvas";
-import Button from "../ui/button";
+import OffCanvas from "../offCanvas";
+import Button from "../../ui/button";
 
 export  const TodoContainer: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -21,19 +21,19 @@ export function useTodoManager() {
   };
   const editTodo = ({ id, title, desc }: EditProps) => {
     updateTodoList(todoList.map((todo: T) =>
-    todo.id === id ? { ...todo, title, desc } : todo
-  ));
+      todo.id === id ? { ...todo, title, desc } : todo
+    ));
   };
-  const deleteTodo = (id: DeleteProps) => 
-   updateTodoList(todoList.filter((todo: T) => todo.id !== id));
+  const deleteTodo = (id: DeleteProps) =>
+    updateTodoList(todoList.filter((todo: T) => todo.id !== id));
 
 
   const toggleTodoIsCompleted = (id: T["id"]) => {
     updateTodoList(todoList.map((todo: T) =>
-    todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
-  ));
+      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+    ));
   };
-  const getTodo = (id: T["id"]) =>todoList.find((todo: T) => todo.id === id) || null;
+  const getTodo = (id: T["id"]) => todoList.find((todo: T) => todo.id === id) || null;
   return {
     todoList,
     addTodo,

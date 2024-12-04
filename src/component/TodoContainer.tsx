@@ -6,7 +6,7 @@ import { TodoList } from "./todoList";
 import OffCanvas from "./offCanvas";
 import Button from "../ui/button";
 
-const TodoContainer: React.FC = () => {
+export  const TodoContainer: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentTodo, setCurrentTodo] = useState<T | null>(null);
   const { todoList, getTodo } = useTodoManager();
@@ -48,4 +48,4 @@ const TodoContainer: React.FC = () => {
   );
 };
 
-export default TodoContainer;
+

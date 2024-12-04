@@ -51,7 +51,7 @@ export const Todo = ({
   }
   const handleToggleCompleted=()=>{
     toggleTodoIsCompleted({id,isCompleted})
-    const value=!isCompleted? "轉到已完成" :"轉回未完成"
+    const value=!isCompleted? "轉致已完成" :"轉回進行中"
     handleDialog({...defaultDiaLogContent,value})
   }
 

@@ -4,6 +4,8 @@ import { useTodoManager } from "../../hook/useTodoManager";
 import trashIcon from "../../icon/trash.svg";
 import Button from "../../ui/button";
 import React from "react";
+import { defaultDiaLogContent, useDialogContext } from "../../store/diaLogContext";
+
 
 export const TodoList = ({
   classNames,
@@ -32,6 +34,7 @@ export const TodoList = ({
   );
 };
 
+
 export const Todo = ({
   todo,
   onClick: toggleOffCanVans,
@@ -41,6 +44,16 @@ export const Todo = ({
 }) => {
   const { deleteTodo, toggleTodoIsCompleted } = useTodoManager();
   const { title, desc, startDate, isCompleted, id } = todo;
+  const {handleDialog}=useDialogContext()
+  const handleDelTodo=()=>{
+    deleteTodo(id)
+    handleDialog({...defaultDiaLogContent,value:"刪除成功"})
+  }
+  const handleToggleCompleted=()=>{
+    toggleTodoIsCompleted({id,isCompleted})
+    const value=!isCompleted? "轉到已完成" :"轉回未完成"
+    handleDialog({...defaultDiaLogContent,value})
+  }
 
   return (
     <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-200 hover:text-slate-600 hover:rounded-[12px]">
@@ -48,7 +61,7 @@ export const Todo = ({
         <input
           type="checkbox"
           checked={isCompleted}
-          onChange={() => toggleTodoIsCompleted(id)}
+          onChange={handleToggleCompleted}
           className="w-[1rem] h-[1rem] mr-[8px]"
         />
         <span
@@ -60,7 +73,7 @@ export const Todo = ({
         <Button
           type="DELETE"
           classNames="flex justify-end w-auto !p-[0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
-          onClick={() => deleteTodo(id)}
+          onClick={handleDelTodo}
         >
           <img
             src={trashIcon || "/fallback-icon.svg"}

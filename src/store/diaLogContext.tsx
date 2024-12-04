@@ -1,44 +1,75 @@
 import cn from "classnames";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-interface Props {
+export interface contentProps {
   status: "success" | "error";
   classNames?: string;
   value: string;
 }
+
+export const defaultDiaLogContent: contentProps = {
+  status: "success",
+  value: "修改成功"
+} as const
+
 const statusStyles = {
-  success: "text-green-700 bg-green-400",
-  error: "text-red-700 bg-red-400",
+  success: "text-green-800 bg-green-300",
+  error: "text-red-800 bg-red-300",
 };
-const DiaLogContext = createContext<Props | null>(null);
+
+const DiaLogContext = createContext<{
+  content: contentProps | null,
+  handleDialog: (content: contentProps) => void
+} | null>(null);
 
 export const DiaLogProvider: React.FC<{ children: React.ReactNode }> = (
-  children
+  { children }
 ) => {
-  const [diaLogContent, setDiaLogContent] = useState<Props|null>(null);
-  const handleDialog=({status,classNames,value}:Props)=>{
-    setDiaLogContent({status,classNames,value})
+  const [content, setContent] = useState<contentProps| null>(null);
+
+console.log("??????")
+  const handleDialog = ({ status, classNames, value }: contentProps) => {
+    setContent({ status, classNames, value })
   }
-  // useEffect(()=>{
-  //   let id=null
-  //   if (isShow) {
-  //     id=setTimeout(()=>{
-  //       setIsShow(false)
-  //     },3000)
-  //   }
-  //   return ()=>{
-  //     clearTimeout(id)
+  // useEffect(() => {
+  //   if (content) {
+  //     const id = setTimeout(() => {
+  //       setContent(null);
+  //     }, 3000);
+  //     return () => clearTimeout(id);
   //   }
 
-
-  // },[isShow])
+  // }, [content])
   return (
-    <DiaLogContext.Provider value={{diaLogContent,handleDialog}}>
+    <DiaLogContext.Provider value={{ content, handleDialog }}>
       {children}
-      {diaLogContent ? <DiaLog /> : null}
+      {content ? <DiaLog /> : null}
     </DiaLogContext.Provider>
   );
 };
+
+
+const DiaLog: React.FC = () => {
+  const { content } = useDialogContext()
+  if (!content) return null
+  const { value, classNames, status } = content
+console.log(status,"status",statusStyles[status])
+  return (
+      <div className="fixed top-[1.5rem] right-[1rem]">
+        <span
+          className={cn(
+            " text-center tracking-wide  rounded-[16px] whitespace-nowrap py-[0.75rem] px-[2.5rem]",
+            statusStyles[status] ? statusStyles[status] : null,
+            classNames
+          )}
+        >
+          {value}
+        </span>
+      </div>
+    // </div>
+  );
+};
+
 
 export const useDialogContext = () => {
   const context = useContext(DiaLogContext);
@@ -46,25 +77,6 @@ export const useDialogContext = () => {
     throw new Error("useDialogContext must be used within a DiaLogProvider");
   }
   return context;
-};
-
-export const DiaLog: React.FC = () => {
-const { diaLogContent:{status,classNames,value} }=useDialogContext()
-  return (
-    <div className="relative">
-      <div className="absolute top-0 right-0">
-        <span
-          className={cn(
-            "w-[500px] text-center rounded-[12px] whitespace-nowrap py-[0.5rem] px-[1rem]",
-            statusStyles?[status] ?statusStyles?[status]:null,
-            classNames
-          )}
-        >
-          {value}
-        </span>
-      </div>
-    </div>
-  );
 };
 
 export default DiaLog;

@@ -4,6 +4,7 @@ import Button from "../ui/button";
 import Textarea from "../ui/textarea";
 import { TodoProps as T } from "../store/todoContext";
 import { useTodoManager } from "../hook/useTodoManager";
+import { useDialogContext,defaultDiaLogContent } from "../store/diaLogContext";
 
 interface Props {
   onClose: () => void;
@@ -14,20 +15,24 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const {addTodo, editTodo } = useTodoManager();
+  const {handleDialog}=useDialogContext()
   const handleSaveTodo = () => {
     const title = titleRef.current?.value.trim() || "";
     const desc = descRef.current?.value.trim() || "";
     if (!title){
-      alert("請輸入標題")
+      handleDialog({ ...defaultDiaLogContent,status:"error",value: "標題不能為空白" })
       return
     }  
     if (todo?.id) {
       editTodo({ title, desc, id: todo.id });
+
+      handleDialog({ ...defaultDiaLogContent, value: "編輯成功" })
     } else {
       addTodo({ title, desc });
+
+      handleDialog({ ...defaultDiaLogContent, value: "新增成功" })
     }
     onClose();
-    // handleDiaLog({})
   };
 
   return (

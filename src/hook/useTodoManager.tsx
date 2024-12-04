@@ -1,11 +1,12 @@
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import { useTodoContext, TodoProps as T } from "../store/todoContext";
-// import DiaLog from "../component/DiaLog";
 
 type AddProps = Pick<T, "title" | "desc">;
-type DeleteProps = T["id"];
+type DeleteProps =T["id"];
 type EditProps = Pick<T, "id" | "title" | "desc">;
+type ToggleCompleted=Pick<T,"id"|"isCompleted">
+
 
 export function useTodoManager() {
   const { todoList, updateTodoList } = useTodoContext();
@@ -28,11 +29,9 @@ export function useTodoManager() {
   };
   const deleteTodo = (id: DeleteProps) =>
     updateTodoList(todoList.filter((todo: T) => todo.id !== id));
-
-
-  const toggleTodoIsCompleted = (id: T["id"]) => {
+  const toggleTodoIsCompleted = ({id,isCompleted}:ToggleCompleted) => {
     updateTodoList(todoList.map((todo: T) =>
-      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+      todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
     ));
   };
   const getTodo = (id: T["id"]) => todoList.find((todo: T) => todo.id === id) || null;

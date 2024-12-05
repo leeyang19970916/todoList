@@ -76,7 +76,7 @@ export const Todo = ({
           onClick={handleDelTodo}
         >
           <img
-            src={trashIcon || "/fallback-icon.svg"}
+            src={trashIcon}
             height={16}
             width={16}
             alt="trashIcon"

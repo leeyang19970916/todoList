@@ -7,7 +7,7 @@ export interface contentProps {
   value: string;
 }
 
-export const defaultDiaLogContent: contentProps = {
+export const defaultToastContent: contentProps = {
   status: "success",
   value: "修改成功"
 } as const
@@ -17,29 +17,29 @@ const statusStyles = {
   error: "text-red-800 bg-red-300",
 };
 
-const DiaLogContext = createContext<{
+const ToastContext = createContext<{
   content: contentProps | null,
-  handleDialog: (content: contentProps) => void
+  handleToast: (content: contentProps) => void
 } | null>(null);
 
-export const DiaLogProvider: React.FC<{ children: React.ReactNode }> = (
+export const ToastProvider: React.FC<{ children: React.ReactNode }> = (
   { children }
 ) => {
   const [content, setContent] = useState<contentProps | null>(null);
-  const handleDialog = ({ status, classNames, value }: contentProps) => {
+  const handleToast = ({ status, classNames, value }: contentProps) => {
     if (content) return
     setContent({ status, classNames, value })
   }
   const onClose = () => setContent(null)
   return (
-    <DiaLogContext.Provider value={{ content, handleDialog }}>
+    <ToastContext.Provider value={{ content, handleToast }}>
       {children}
-      {content ? <DiaLog onClose={onClose} /> : null}
-    </DiaLogContext.Provider>
+      {content ? <Toast onClose={onClose} /> : null}
+    </ToastContext.Provider>
   );
 };
-const DiaLog: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { content } = useDialogContext()
+const Toast: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { content } = useToastContext()
   const [isFading, setIsFading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const DiaLog: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { value, classNames, status } = content
 
   return (
-    <div className="fixed top-[1.5rem] right-[1rem]">
+    <div className="fixed bottom-[1.5rem] right-[1rem]">
       <span
         className={cn(
           "text-center tracking-wide  rounded-[16px] whitespace-nowrap py-[0.75rem] px-[2.5rem]",
@@ -74,12 +74,12 @@ const DiaLog: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     </div>
   );
 };
-export const useDialogContext = () => {
-  const context = useContext(DiaLogContext);
+export const useToastContext = () => {
+  const context = useContext(ToastContext);
   if (!context) {
-    throw new Error("useDialogContext must be used within a DiaLogProvider");
+    throw new Error("useToastContext must be used within a ToastProvider");
   }
   return context;
 };
 
-export default DiaLog;
+export default Toast;

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { forwardRef } from "react";
+import React,{ forwardRef } from "react";
 
 interface Props {
   placeholder?: string;

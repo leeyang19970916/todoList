@@ -1,5 +1,5 @@
 import cn from "classnames";
-import {ReactNode } from "react";
+import React,{ReactNode } from "react";
 
 type ButtonType = "ADD"|"SAVE" | "DELETE" | "EDIT" | "CANCEL";
 interface Props {

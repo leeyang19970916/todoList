@@ -4,7 +4,7 @@ import { useTodoManager } from "../../hook/useTodoManager";
 import trashIcon from "../../icon/trash.svg";
 import Button from "../../ui/button";
 import React from "react";
-import { defaultDiaLogContent, useDialogContext } from "../../store/diaLogContext";
+import { defaultToastContent, useToastContext } from "../../store/toastContext";
 
 
 export const TodoList = ({
@@ -44,15 +44,15 @@ export const Todo = ({
 }) => {
   const { deleteTodo, toggleTodoIsCompleted } = useTodoManager();
   const { title, desc, startDate, isCompleted, id } = todo;
-  const {handleDialog}=useDialogContext()
+  const {handleToast}=useToastContext()
   const handleDelTodo=()=>{
     deleteTodo(id)
-    handleDialog({...defaultDiaLogContent,value:"刪除成功"})
+    handleToast({...defaultToastContent,value:"刪除成功"})
   }
   const handleToggleCompleted=()=>{
     toggleTodoIsCompleted({id,isCompleted})
     const value=!isCompleted? "轉入已完成" :"轉入進行中"
-    handleDialog({...defaultDiaLogContent,value})
+    handleToast({...defaultToastContent,value})
   }
 
   return (

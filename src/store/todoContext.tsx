@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import useFetchTodo from "../api/useFetchTodo";
 export interface TodoProps {
   id: string;
   title: string;
@@ -17,6 +18,8 @@ const TodoContext = createContext<{
 export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+
+  useFetchTodo()
   const [todoList, setTodoList] = useState<T[]>(() => {
     try {
       const storedData = localStorage.getItem("todoList");

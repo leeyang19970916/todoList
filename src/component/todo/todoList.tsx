@@ -57,7 +57,7 @@ export const Todo = ({
   }
 
   return (
-    <div className={cn(isPin?"bg-orange-200 hover:bg-orange-100 ":"hover:bg-gray-200"," hover:text-slate-600 group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] rounded-[12px]")}>
+    <div className={cn(isPin?"bg-orange-100 hover:bg-orange-200 ":"hover:bg-gray-200"," hover:text-slate-600 group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] rounded-[12px]")}>
       <div className="flex items-center">
         <input
           type="checkbox"

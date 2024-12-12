@@ -6,6 +6,7 @@ export interface TodoProps {
   desc?: string;
   startDate: string;
   isCompleted: boolean;
+  isPin:boolean;
 }
 
 type T=TodoProps

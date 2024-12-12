@@ -1,10 +1,12 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import Input from "../ui/input";
 import Button from "../ui/button";
 import Textarea from "../ui/textarea";
 import { TodoProps as T } from "../store/todoContext";
-import { useTodoManager } from "../hook/useTodoManager";
-import { useToastContext,defaultToastContent } from "../store/toastContext";
+import { useTodoHandler } from "../hook/useTodoHandler";
+import { useToastContext, defaultToastContent } from "../store/toastContext";
+import ToggleSwtich from "../ui/toggleSwtich";
+
 interface Props {
   onClose: () => void;
   todo: T | null;
@@ -13,26 +15,28 @@ interface Props {
 const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLTextAreaElement>(null);
-  const {addTodo, editTodo } = useTodoManager();
-  const {handleToast}=useToastContext()
+  const [isPin,setIsPin]=useState<boolean>(Boolean(todo?.isPin))
+  const { addTodo, editTodo } = useTodoHandler();
+  const { handleToast } = useToastContext()
   const handleSaveTodo = () => {
     const title = titleRef.current?.value.trim() || "";
     const desc = descRef.current?.value.trim() || "";
-    if (!title){
-      handleToast({ ...defaultToastContent,status:"error",value: "標題不能為空白" })
+    if (!title) {
+      handleToast({ ...defaultToastContent, status: "error", value: "標題不能為空白" })
       return
-    }  
+    }
     if (todo?.id) {
-      editTodo({ title, desc, id: todo.id });
+      editTodo({ isPin, title, desc, id: todo.id });
 
       handleToast({ ...defaultToastContent, value: "編輯成功" })
     } else {
-      addTodo({ title, desc });
+      addTodo({ title, desc, isPin });
 
       handleToast({ ...defaultToastContent, value: "新增成功" })
     }
     onClose();
   };
+  const handlePinChange=useCallback(()=>setIsPin(!isPin),[])
 
   return (
     <>
@@ -54,6 +58,7 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
             label="備註"
             value={todo?.desc || ""}
           />
+          {<ToggleSwtich checked={todo?.isPin ? true : false} label="叮選" onChange={handlePinChange} />}
           {todo ? (
             <div className="text-end text-gray-500">
               建立日期: {todo.startDate}

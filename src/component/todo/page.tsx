@@ -1,6 +1,6 @@
 import React, {useState } from "react";
 import { TodoProps as T } from "../../store/todoContext";
-import { useTodoManager } from "../../hook/useTodoManager";
+import { useTodoHandler } from "../../hook/useTodoHandler";
 import { TabList, TabProps } from "./tabList";
 import { TodoList } from "./todoList";
 import OffCanvas from "../offCanvas";
@@ -9,7 +9,7 @@ import Button from "../../ui/button";
 export  const TodoContainer: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentTodo, setCurrentTodo] = useState<T | null>(null);
-  const { todoList, getTodo } = useTodoManager();
+  const { todoList, getTodo } = useTodoHandler();
   const [isCompleted, setIsCompleted] = useState<T["isCompleted"]>(false);
 
   const handleEditTodo =(id: T["id"]) => {

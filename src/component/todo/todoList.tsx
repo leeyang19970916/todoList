@@ -1,7 +1,8 @@
 import cn from "classnames";
 import { TodoProps as T } from "../../store/todoContext";
-import { useTodoManager } from "../../hook/useTodoManager";
+import { useTodoHandler } from "../../hook/useTodoHandler";
 import trashIcon from "../../icon/trash.svg";
+import pinIcon from "../../icon/pin.svg"
 import Button from "../../ui/button";
 import React from "react";
 import { defaultToastContent, useToastContext } from "../../store/toastContext";
@@ -19,7 +20,7 @@ export const TodoList = ({
   return (
     <div
       className={cn(
-        "border border-gray-200 bg-gray-100 rounded-[0_12px_12px_12px] h-[500px] p-[16px_12px] flex flex-col overflow-y-scroll",
+        "border border-gray-200 bg-gray-100 rounded-[0_12px_12px_12px] h-[500px] p-[16px_12px] flex flex-col overflow-y-scroll gap-[5px]",
         classNames
       )}
     >
@@ -42,21 +43,21 @@ export const Todo = ({
   todo: T;
   onClick: (id: T["id"]) => void;
 }) => {
-  const { deleteTodo, toggleTodoIsCompleted } = useTodoManager();
-  const { title, desc, startDate, isCompleted, id } = todo;
-  const {handleToast}=useToastContext()
-  const handleDelTodo=()=>{
+  const { deleteTodo, toggleTodoIsCompleted } = useTodoHandler();
+  const { title, desc, startDate, isCompleted, id,isPin } = todo;
+  const { handleToast } = useToastContext()
+  const handleDelTodo = () => {
     deleteTodo(id)
-    handleToast({...defaultToastContent,value:"刪除成功"})
+    handleToast({ ...defaultToastContent, value: "刪除成功" })
   }
-  const handleToggleCompleted=()=>{
-    toggleTodoIsCompleted({id,isCompleted})
-    const value=!isCompleted? "轉入已完成" :"轉入進行中"
-    handleToast({...defaultToastContent,value})
+  const handleToggleCompleted = () => {
+    toggleTodoIsCompleted({ id, isCompleted })
+    const value = !isCompleted ? "轉入已完成" : "轉入進行中"
+    handleToast({ ...defaultToastContent, value })
   }
 
   return (
-    <div className="group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] hover:bg-gray-200 hover:text-slate-600 hover:rounded-[12px]">
+    <div className={cn(isPin?"bg-orange-200 hover:bg-orange-100 ":"hover:bg-gray-200"," hover:text-slate-600 group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] rounded-[12px]")}>
       <div className="flex items-center">
         <input
           type="checkbox"
@@ -70,18 +71,28 @@ export const Todo = ({
         >
           {title}
         </span>
-        <Button
-          type="DELETE"
-          classNames="flex justify-end w-auto !p-[0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
-          onClick={handleDelTodo}
-        >
-          <img
-            src={trashIcon}
-            height={16}
-            width={16}
-            alt="trashIcon"
-          />
-        </Button>
+        <div className="flex gap-[1rem]">
+          {isPin ? <div>
+            <img
+              src={pinIcon}
+              height={16}
+              width={16}
+              alt="pinIcon"
+            />
+          </div> : null}
+          <Button
+            type="DELETE"
+            classNames="flex justify-end w-auto !p-[0] opacity-1 group-hover:opacity-100 transition-opacity duration-75"
+            onClick={handleDelTodo}
+          >
+            <img
+              src={trashIcon}
+              height={16}
+              width={16}
+              alt="trashIcon"
+            />
+          </Button>
+        </div>
       </div>
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-75 flex justify-between">
         <span className="w-[15px] mr-[8px]"></span>

@@ -17,7 +17,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, Props>(
         </label>
         <textarea
           ref={ref}
-          className="min-h-[100px] p-[0.5rem_1rem]"
+          className="min-h-[200px] p-[0.5rem_1rem]"
           placeholder={placeholder || "備註..."}
           defaultValue={value}
         />

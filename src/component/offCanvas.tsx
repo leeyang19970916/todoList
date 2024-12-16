@@ -58,7 +58,7 @@ const OffCanvas: React.FC<Props> = ({ onClose, todo }) => {
             label="備註"
             value={todo?.desc || ""}
           />
-          {<ToggleSwtich checked={todo?.isPin ? true : false} label="叮選" onChange={handlePinChange} />}
+          {<ToggleSwtich checked={todo?.isPin ? true : false} label="釘選" onChange={handlePinChange} />}
           {todo ? (
             <div className="text-end text-gray-500">
               建立日期: {todo.startDate}

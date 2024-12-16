@@ -6,6 +6,8 @@ import pinIcon from "../../icon/pin.svg"
 import Button from "../../ui/button";
 import React from "react";
 import { defaultToastContent, useToastContext } from "../../store/toastContext";
+import {useDialogContext } from "../../store/dialogContext";
+
 
 
 export const TodoList = ({
@@ -45,8 +47,13 @@ export const Todo = ({
 }) => {
   const { deleteTodo, toggleTodoIsCompleted } = useTodoHandler();
   const { title, desc, startDate, isCompleted, id,isPin } = todo;
+  const {dialogHandler}=useDialogContext()
   const { handleToast } = useToastContext()
   const handleDelTodo = () => {
+    if (isPin) {
+      dialogHandler({isOpen:true,type:"delete"})
+      return
+    }
     deleteTodo(id)
     handleToast({ ...defaultToastContent, value: "刪除成功" })
   }

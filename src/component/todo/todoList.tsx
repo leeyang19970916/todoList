@@ -8,8 +8,6 @@ import React from "react";
 import { defaultToastContent, useToastContext } from "../../store/toastContext";
 import { useDialogContext } from "../../store/dialogContext";
 
-
-
 export const TodoList = ({
   classNames,
   onClick,

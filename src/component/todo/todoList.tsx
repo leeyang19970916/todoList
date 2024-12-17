@@ -6,7 +6,7 @@ import pinIcon from "../../icon/pin.svg"
 import Button from "../../ui/button";
 import React from "react";
 import { defaultToastContent, useToastContext } from "../../store/toastContext";
-import {useDialogContext } from "../../store/dialogContext";
+import { useDialogContext } from "../../store/dialogContext";
 
 
 
@@ -46,12 +46,14 @@ export const Todo = ({
   onClick: (id: T["id"]) => void;
 }) => {
   const { deleteTodo, toggleTodoIsCompleted } = useTodoHandler();
-  const { title, desc, startDate, isCompleted, id,isPin } = todo;
-  const {dialogHandler}=useDialogContext()
+  const { title, desc, startDate, isCompleted, id, isPin } = todo;
+  const { dialogHandler } = useDialogContext()
   const { handleToast } = useToastContext()
   const handleDelTodo = () => {
     if (isPin) {
-      dialogHandler({isOpen:true,type:"delete"})
+      dialogHandler({ isOpen: true, type: "delete", onConfirmCallback:()=>{
+        deleteTodo(id)
+        handleToast({ ...defaultToastContent, value: "刪除成功" })}})
       return
     }
     deleteTodo(id)
@@ -64,7 +66,7 @@ export const Todo = ({
   }
 
   return (
-    <div className={cn(isPin?"bg-orange-100 hover:bg-orange-200 ":"hover:bg-gray-200"," hover:text-slate-600 group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] rounded-[12px]")}>
+    <div className={cn(isPin ? "bg-orange-100 hover:bg-orange-200 " : "hover:bg-gray-200", " hover:text-slate-600 group flex flex-col p-[1rem_0.75rem] w-full gap-[8px] rounded-[12px]")}>
       <div className="flex items-center">
         <input
           type="checkbox"

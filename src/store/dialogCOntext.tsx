@@ -1,7 +1,8 @@
 import React, { FC, createContext, ReactNode, useContext, useState } from "react";
 
 type DialogType = "delete" | "";
-
+type OnConfirmCallbackType = (() => void) | null
+type ActionType = 'confirm' | "cancel"
 interface ContentProps {
     title?: string;
     desc?: string;
@@ -11,36 +12,35 @@ interface ContentProps {
         cancel: string;
     };
 }
+interface DialogStateProps {
+    isOpen: boolean,
+    content: ContentProps,
+    onConfirm: OnConfirmCallbackType
+}
 
 interface DialogContextProps {
     content: ContentProps;
-    dialogHandler: (params: { isOpen: boolean; type: DialogType }) => void;
+    dialogHandler: (params: { isOpen: boolean; type: DialogType, onConfirmCallback?: OnConfirmCallbackType }) => void
 }
 
 const DialogContext = createContext<DialogContextProps | null>(null);
 
 export const DialogProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [content, setContent] = useState<ContentProps>(defaultContent);
+    const [dialogState, setDialogState] = useState<DialogStateProps>({ isOpen: false, content: defaultContent, onConfirm: null })
 
-    // 处理对话框状态与内容
-    const dialogHandler = ({ isOpen = false, type = "" }: { isOpen: boolean; type: DialogType }) => {
-        setIsOpen(isOpen);
-        if (type) {
-            const content = typeHandler(type);
-            setContent((prev) => ({ ...prev, ...content }));
-        }
+    const dialogHandler = ({ isOpen = false, type = "", onConfirmCallback = null }: { isOpen: boolean, type: DialogType, onConfirmCallback?: OnConfirmCallbackType }) => {
+        const content = type ? typeHandler(type) : defaultContent;
+        setDialogState({ isOpen, content, onConfirm: onConfirmCallback });
     };
 
     return (
-        <DialogContext.Provider value={{ content, dialogHandler }}>
+        <DialogContext.Provider value={{ ...dialogState, dialogHandler }}>
             {children}
-            {isOpen && <Dialog />}
+            {dialogState.isOpen && <Dialog onConfirm={dialogState.onConfirm} />}
         </DialogContext.Provider>
     );
 };
 
-// 根据类型返回对应的内容
 const typeHandler = (type: DialogType): ContentProps => {
     const templates: Record<DialogType, ContentProps> = {
         delete: deleteContent,
@@ -57,7 +57,6 @@ export const deleteContent: ContentProps = {
         cancel: "取消",
     }
 };
-// 默认对话框内容模板
 export const defaultContent: ContentProps = {
     title: "提示",
     desc: "操作無法恢復，請確認您的選擇。",
@@ -68,28 +67,29 @@ export const defaultContent: ContentProps = {
     },
 };
 
-// 对话框组件
-export const Dialog: FC = () => {
+export const Dialog: FC<{ onConfirm: OnConfirmCallbackType }> = ({ onConfirm }) => {
     const { content, dialogHandler } = useDialogContext();
     const { title, desc, buttonGroup } = content;
 
-    // 关闭对话框
-    const handleClose = () => dialogHandler({ isOpen: false, type: "" });
-
+    const closeDialog = () => dialogHandler({ isOpen: false, type: "" });
+    const handleAction = (action: ActionType) => {
+        if (action === "confirm" && onConfirm) onConfirm();
+        closeDialog();
+    };
     return (
         <div className="fixed inset-0 bg-slate-500 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white shadow-lg rounded-lg p-6 w-[50%] min-w-[500px]">
-                {title && <h2 className="text-xl font-bold mb-4">{title}</h2>}
-                {desc && <p className="text-gray-700 mb-6">{desc}</p>}
+            <div className="bg-white shadow-lg rounded-lg p-6 w-[50%] min-w-[500px] flex flex-col gap-[1rem]">
+                {title && <h2 className="text-xl font-bold py-[8px]">{title}</h2>}
+                {desc && <p className="text-gray-700  min-h-[80px]">{desc}</p>}
                 <div className="flex items-center justify-center gap-4">
                     <button
-                        onClick={handleClose}
+                        onClick={() => handleAction("confirm")}
                         className="rounded-lg bg-red-500 text-white px-4 py-2 w-full"
                     >
                         {buttonGroup.confirm}
                     </button>
                     <button
-                        onClick={handleClose}
+                        onClick={() => handleAction("cancel")}
                         className="rounded-lg bg-gray-200 text-gray-700 px-4 py-2 w-full"
                     >
                         {buttonGroup.cancel}
@@ -100,7 +100,6 @@ export const Dialog: FC = () => {
     );
 };
 
-// 自定义 Hook
 export const useDialogContext = () => {
     const context = useContext(DialogContext);
     if (!context) {

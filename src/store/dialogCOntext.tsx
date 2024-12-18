@@ -1,16 +1,17 @@
+import cn from "classnames";
 import React, { FC, createContext, ReactNode, useContext, useState } from "react";
 
 type DialogType = "delete" | "";
 type OnConfirmCallbackType = (() => void) | null
 type ActionType = 'confirm' | "cancel"
 interface ContentProps {
-    title?: string;
-    desc?: string;
-    classNames?: string;
+    title: string;
+    desc: string;
     buttonGroup: {
         confirm: string;
         cancel: string;
     };
+    classNames?: string;
 }
 interface DialogStateProps {
     isOpen: boolean,
@@ -36,7 +37,7 @@ export const DialogProvider: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <DialogContext.Provider value={{ ...dialogState, dialogHandler }}>
             {children}
-            {dialogState.isOpen && <Dialog onConfirm={dialogState.onConfirm} />}
+            {dialogState.isOpen && <Dialog isOpen={dialogState.isOpen} onConfirm={dialogState.onConfirm} />}
         </DialogContext.Provider>
     );
 };
@@ -67,7 +68,7 @@ export const defaultContent: ContentProps = {
     },
 };
 
-export const Dialog: FC<{ onConfirm: OnConfirmCallbackType }> = ({ onConfirm }) => {
+export const Dialog: FC<{ onConfirm: OnConfirmCallbackType, isOpen: DialogStateProps["isOpen"] }> = ({ onConfirm, isOpen }) => {
     const { content, dialogHandler } = useDialogContext();
     const { title, desc, buttonGroup } = content;
 
@@ -77,8 +78,9 @@ export const Dialog: FC<{ onConfirm: OnConfirmCallbackType }> = ({ onConfirm }) 
         closeDialog();
     };
     return (
-        <div className="fixed inset-0 bg-slate-500 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white shadow-lg rounded-lg p-6 w-[50%] min-w-[500px] flex flex-col gap-[1rem]">
+        <div className={"fixed inset-0 bg-slate-500 bg-opacity-50 flex items-center justify-center"}>
+            <div className={cn(isOpen ? 'scale-125' : 'scale-100',
+                "bg-white shadow-lg rounded-lg p-6 w-[50%] min-w-[500px] flex flex-col gap-[1rem] transition-transform duration-500 ease-in-out transform")}>
                 {title && <h2 className="text-xl font-bold py-[8px]">{title}</h2>}
                 {desc && <p className="text-gray-700  min-h-[80px]">{desc}</p>}
                 <div className="flex items-center justify-center gap-4">
